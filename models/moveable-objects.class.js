@@ -1,62 +1,67 @@
-class MoveableObjects{
+class MoveableObjects {
     x = 120;
     y = 280;
     img;
-    height= 150;
+    height = 150;
     width = 100;
     imageCache = {}
     currentImage = 0;
     speed = 0.99;
     otherDirection = false
     speedY = 0;
-    acceleration = 1
+    acceleration = 2
 
-    applyGravaty(){
-      setInterval(() => {
-        if(this.isAboveGround()|| this.speedY > 0){
-        this.y -= this.speedY;
-        this.speedY -= this. acceleration;
-        }
-      }, 1000 /25)
+    applyGravaty() {
+        setInterval(() => {
+            if (this.isAboveGround() || this.speedY > 0) {
+                this.y -= this.speedY;
+                this.speedY -= this.acceleration;
+            }
+        }, 1000 / 25)
     }
 
-    isAboveGround(){
+    isAboveGround() {
         return this.y < 135
     }
 
 
-    loadImage(path){
+    loadImage(path) {
         this.img = new Image();
         this.img.src = path
     }
 
-   
-    loadImages(arr){
+
+    loadImages(arr) {
         arr.forEach(path => {
-        let img = new Image();
-        img.src = path
-        this.imageCache[path] = img;
-            
+            let img = new Image();
+            img.src = path
+            this.imageCache[path] = img;
+
         });
-       
-    }
-
-    moveRight(){
-        console.log('moving right')
 
     }
 
-   moveLeft(){
-        setInterval(() => {
-            this.x -= this.speed
-        }, 1000/60
-    )
+    moveRight() {
+        this.x += this.speed;
+        this.otherDirection = false
+
+    }
+
+    moveLeft() {
+
+        this.x -= this.speed;
+        this.otherDirection = true
+
+    }
+    playAnimation(images) {
+        let i = this.currentImage % this.IAMGES_WALKING.length;
+        let path = images[i];
+        this.img = this.imageCache[path];
+        this.currentImage++
+    }
+
+    jump() {
+        this.speedY = 20
+    }
     
-    }
-    playAnimation(images){
-          let i = this.currentImage % this.IAMGES_WALKING.length;
-            let path = images[i];
-            this.img = this.imageCache[path];
-            this.currentImage++
-    }
 }
