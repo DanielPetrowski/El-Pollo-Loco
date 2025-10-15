@@ -8,7 +8,8 @@ const level1 = new Level(
     ],
 
     [
-        new Cloud()
+         new Cloud(`img/5_background/layers/4_clouds/1.png`, 400),
+        new Cloud(`img/5_background/layers/4_clouds/2.png`, 400*2.5),
     ],
 
     [
