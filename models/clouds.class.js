@@ -16,6 +16,10 @@ class Cloud extends MoveableObjects {
             this.moveLeft() 
             this.speed = 0.5
             this.otherDirection = false
+
+            if ( this.x + this.width < 0){
+                this.x = 4500 + Math.random()* 300
+            }
         }, 1000 / 60)
     }
 
