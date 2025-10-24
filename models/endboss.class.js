@@ -39,7 +39,7 @@ class Endboss extends MovableObject {
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_HURT);
     this.x = 2500;
-    // this.health = 100;
+    
     this.animate();
   }
 
@@ -52,18 +52,11 @@ class Endboss extends MovableObject {
     setInterval(() => {
      if (this.isDead()) {
         this.playAnimation(this.IMAGES_DEAD);
+        
       } else if (this.isHurt()) {
         this.playAnimation(this.IMAGES_HURT);
-      // } else if (this.isAboveGround()) {
-        // this.playAnimation(this.IMAGES_JUMPING);
-      // } else {
-        // if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-          // Wenn rechte ODER linke Pfeiltaste gedrückt wird
-
-          //Walk animation
-          // this.playAnimation(this.IMAGES_WALKING);
-        // }
+     
       }
-    }, 50);
+    }, 2000);
   }
 }

@@ -52,17 +52,13 @@ class World {
           this.character.y + this.character.height - this.character.offset.bottom > enemy.y + enemy.offset.top
 
       if (jumpedOnEnemy) {
-        console.log("Jump-Attacke auf Enemy!");
+        
         enemy.health = 0;
         enemy.speed =
         enemy.dead = true;
         enemy.playAnimation(enemy.IMAGES_DEAD);
 
-        // if (enemy.isDead()) {
-        //   this.removeEnemy(enemy);
-        // }
-
-        // this.character.jump(); // Bounce
+ 
       } else {
 
         this.character.hit();
@@ -72,18 +68,7 @@ class World {
     });
   }
 
-  // this.y + this.height - this.offset.bottom > mo.y + mo.offset.top
 
-  // checkEndbossHitByBottle() {
-  //   this.throwableObjects.forEach((bottle) => {
-  //     if (this.endboss.isColliding(bottle)) {
-  //       console.log("Endboss wurde getroffen!");
-  //       console.log(this.endboss.health);
-  //       this.endboss.hit();
-  //       this.StatusBarEndboss.setPercentage(this.endboss.health);
-  //     }
-  //   });
-  // }
 
 checkEndbossHitByBottle() {
   for (let i = this.throwableObjects.length - 1; i >= 0; i--) {
@@ -110,14 +95,11 @@ checkEndbossHitByBottle() {
     this.level.enemies.forEach((enemy) => {
 
       if (enemy.isColliding(bottle)) {
-        console.log("Enemy wurde getroffen!", enemy);
+        
 
-        enemy.hit(); // zieht Health ab 
+        enemy.hit(); 
 
-        // Optional: Gegner löschen, wenn tot
-        // if (enemy.isDead()) {
-        //   this.removeEnemy(enemy);
-        // }
+      
 
       }
     });
@@ -125,12 +107,7 @@ checkEndbossHitByBottle() {
 }
 
 
-// removeEnemy(enemy) {
-//   const index = this.level.enemies.indexOf(enemy);
-//   if (index > -1) {
-//     this.level.enemies.splice(index, 1);
-//   }
-// }
+
 
   checkCoinCollision() {
     this.level.coins.forEach((coin, index) => {
@@ -171,9 +148,7 @@ checkEndbossHitByBottle() {
         this.character.bottles--;
         const percentage = (this.character.bottles / this.totalBottles) * 100; 
         this.StatusBarBottle.setPercentage(percentage);
-      } else {
-        console.log("Keine Bottle verfügbar"); 
-      }
+      } 
     }
   }
 
