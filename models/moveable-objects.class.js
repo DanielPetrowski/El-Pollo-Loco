@@ -47,14 +47,14 @@ class MovableObject extends DrawableObject {
     ); 
   }
 
-  hit() {
-    this.health -= 5;
-    if (this.health < 0) {
-      this.health = 0;
-    } else {
-      this.lastHit = new Date().getTime(); 
-    }
-  }
+hit() {
+  // Immer abziehen
+  this.health -= 5;
+  if (this.health < 0) this.health = 0;
+
+  // Immer Hurt starten (Animation)
+  this.lastHit = new Date().getTime();
+}
 
   isDead() {
     return this.health == 0;

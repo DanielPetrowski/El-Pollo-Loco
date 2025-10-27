@@ -39,34 +39,52 @@ class Endboss extends MovableObject {
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_HURT);
     this.x = 2500;
-    this.frameCounter = 0
+    this.health = 100; // Startwert
+    this.lastHit = 0;
     this.animate();
   }
 
- animate() {
-  setInterval(() => {
-    this.frameCounter++;
+  animate() {
+    setInterval(() => {
+      if (this.isDead()) {
+        // Dead-Animation abspielen
+        if (this.currentImage < this.IMAGES_DEAD.length) {
+          let path = this.IMAGES_DEAD[this.currentImage];
+          this.img = this.imageCache[path];
+          this.currentImage++;
+        } else {
+          let lastIndex = this.IMAGES_DEAD.length - 1;
+          this.img = this.imageCache[this.IMAGES_DEAD[lastIndex]];
+        }
+      } else if (this.isHurt()) {
+        this.playAnimation(this.IMAGES_HURT);
+      } else {
+        this.playAnimation(this.IMAGES_WALKING);
+      }
+    }, 200);
+  }
 
-    if (this.isDead()) {
-    // Nur für Endboss: beim letzten Frame stoppen
-    if (this.currentImage < this.IMAGES_DEAD.length) {
-        let i = this.currentImage;
-        let path = this.IMAGES_DEAD[i];
-        this.img = this.imageCache[path];
-        this.currentImage++;
-    } else {
-        // Hier bleibt das letzte Bild stehen
-        let lastIndex = this.IMAGES_DEAD.length - 1;
-        this.img = this.imageCache[this.IMAGES_DEAD[lastIndex]];
-    }
-} else if (this.isHurt()) {
-  if(this.frameCounter % 10 === 0){
-    this.playAnimation(this.IMAGES_HURT)};
-} else {
-    this.playAnimation(this.IMAGES_WALKING);
+  // Hurt-Animation starten
+  startHurt() {
+    this.lastHit = new Date().getTime();
+  }
+
+  isHurt() {
+    // Nur für Animation, blockiert keine Treffer
+    return new Date().getTime() - this.lastHit < 500;
+  }
+
+hit() {
+  this.health -= 20;
+  //voher this.health -=5;
+  if (this.health < 0) this.health = 0;
+  this.lastHit = new Date().getTime();
+  
 }
 
-  }, 500);
-}
 
+
+  isDead() {
+    return this.health <= 0;
+  }
 }

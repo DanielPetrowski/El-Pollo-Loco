@@ -75,18 +75,32 @@ updateBottleStatusBar() {
     });
   }
 
-  checkEndbossHitByBottle() {
-    for (let i = this.throwableObjects.length - 1; i >= 0; i--) {
-      const bottle = this.throwableObjects[i];
-      if (this.endboss.isColliding(bottle)) {
-        if (!this.endboss.isHurt()) {
-          this.endboss.hit();
-          this.StatusBarEndboss.setPercentage(this.endboss.health);
-        }
-        this.throwableObjects.splice(i, 1);
-      }
+checkEndbossHitByBottle() {
+  for (let i = this.throwableObjects.length - 1; i >= 0; i--) {
+    const bottle = this.throwableObjects[i];
+
+    if (this.endboss.isColliding(bottle)) {
+      // HP sofort reduzieren
+      this.endboss.hit();
+
+      // Statusbar sofort aktualisieren
+      this.StatusBarEndboss.setPercentage(this.endboss.health);
+
+      // Hurt-Animation starten
+      this.endboss.startHurt();
+
+      // Flasche entfernen
+      this.throwableObjects.splice(i, 1);
     }
   }
+}
+
+
+
+
+
+
+
 
   checkEnemyHitByBottle() {
     this.throwableObjects.forEach((bottle) => {
