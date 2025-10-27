@@ -10,6 +10,7 @@ class World {
   StatusBarBottle = new StatusBarBottle();
   StatusBarEndboss = new StatusBarEndboss();
   throwableObjects = [];
+  
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -21,6 +22,9 @@ class World {
     this.totalCoins = this.level.coins.length;
     this.totalBottles = this.level.bottles.length;
     this.endboss = this.level.enemies[this.level.enemies.length - 1];
+    this.throwCooldown = 1000; // 1000 ms = 1 Sekunde Cooldown
+this.lastThrowTime = 0;    // Zeitpunkt der letzten Flasche
+
   }
 
   setWorld() {
@@ -33,7 +37,7 @@ class World {
       this.checkEndbossHitByBottle();
       this.checkEnemyHitByBottle();
       this.checkThrowObjects();
-    }, 200);
+    }, 16);
   }
 
   // === Statusbar aktualisieren ===
@@ -123,25 +127,28 @@ checkBottleCollision() {
 }
 
 checkThrowObjects() {
-    if (this.keyboard.D) {
-        if (this.character.bottles > 0) {
-            let bottle = new ThrowableObject(
-                this.character.x + 50,
-                this.character.y + 100
-            );
-            this.throwableObjects.push(bottle);
+  const now = new Date().getTime(); // aktueller Zeitstempel
 
-            // Anzahl Bottles verringern
-            this.character.bottles--;
-            if (this.character.bottles < 0) this.character.bottles = 0;
+  if (this.keyboard.D && this.character.bottles > 0) {
+    if (now - this.lastThrowTime >= this.throwCooldown) {
+      // Flasche erzeugen
+      let bottle = new ThrowableObject(
+        this.character.x + 50,
+        this.character.y + 100
+      );
+      this.throwableObjects.push(bottle);
+      this.character.bottles--;
 
-            // Statusbar aktualisieren
-            this.updateBottleStatusBar();
-        } else {
-            console.log("Keine Bottle verfügbar"); 
-        }
+      // Statusbar aktualisieren
+      const percentage = Math.min((this.character.bottles / this.totalBottles) * 100, 100);
+      this.StatusBarBottle.setPercentage(percentage);
+
+      // Zeit des letzten Wurfs speichern
+      this.lastThrowTime = now;
     }
+  }
 }
+
 
   // === Zeichnen ===
   draw() {
