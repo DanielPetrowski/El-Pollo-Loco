@@ -14,11 +14,16 @@ class StatusBar extends DrawableObject {
   }
 
  
-  setPercentage(percentage) {
-    this.percentage = percentage;
+setPercentage(percentage) {
+    // Begrenze den Wert auf 0–100%
+    this.percentage = Math.max(0, Math.min(percentage, 100));
+
+    // Lade das passende Bild
     let path = this.IMAGES[this.resolveImageIndex()]; 
     this.img = this.imageCache[path];
-  }
+}
+
+
 
   resolveImageIndex() {
     if (this.percentage == 100) {
