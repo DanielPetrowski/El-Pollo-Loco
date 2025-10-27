@@ -16,4 +16,3 @@ class StatusBarBottle extends StatusBar {
     this.setPercentage(0);
   }
 }
-

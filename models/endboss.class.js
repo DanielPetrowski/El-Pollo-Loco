@@ -39,24 +39,34 @@ class Endboss extends MovableObject {
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_HURT);
     this.x = 2500;
-    
+    this.frameCounter = 0
     this.animate();
   }
 
-  animate() {
-    setInterval(() => {
-      
-      this.playAnimation(this.IMAGES_WALKING);
-    }, 200);
+ animate() {
+  setInterval(() => {
+    this.frameCounter++;
 
-    setInterval(() => {
-     if (this.isDead()) {
-        this.playAnimation(this.IMAGES_DEAD);
-        
-      } else if (this.isHurt()) {
-        this.playAnimation(this.IMAGES_HURT);
-     
-      }
-    }, 2000);
-  }
+    if (this.isDead()) {
+    // Nur für Endboss: beim letzten Frame stoppen
+    if (this.currentImage < this.IMAGES_DEAD.length) {
+        let i = this.currentImage;
+        let path = this.IMAGES_DEAD[i];
+        this.img = this.imageCache[path];
+        this.currentImage++;
+    } else {
+        // Hier bleibt das letzte Bild stehen
+        let lastIndex = this.IMAGES_DEAD.length - 1;
+        this.img = this.imageCache[this.IMAGES_DEAD[lastIndex]];
+    }
+} else if (this.isHurt()) {
+  if(this.frameCounter % 10 === 0){
+    this.playAnimation(this.IMAGES_HURT)};
+} else {
+    this.playAnimation(this.IMAGES_WALKING);
+}
+
+  }, 500);
+}
+
 }

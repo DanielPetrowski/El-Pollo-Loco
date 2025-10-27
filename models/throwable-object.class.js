@@ -1,5 +1,6 @@
 class ThrowableObject extends MovableObject {
- 
+  // speedY = 30;
+  // speedX = 20;
 
   hasHit = false;
 
@@ -26,6 +27,7 @@ class ThrowableObject extends MovableObject {
     this.speed = 0;
     this.speedY = 0;
     this.acceleration = 0;
-    
+    // Optional: Splash anzeigen oder später entfernen
+    // this.playAnimation(this.IMAGES_SPLASH);
   }
 }
