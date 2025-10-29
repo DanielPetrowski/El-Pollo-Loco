@@ -11,7 +11,7 @@ class World {
   StatusBarEndboss = new StatusBarEndboss();
   throwableObjects = [];
   
-
+  
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
@@ -31,49 +31,54 @@ this.lastThrowTime = 0;    // Zeitpunkt der letzten Flasche
     this.character.world = this;
   }
 
-  run() {
-    setInterval(() => {
-      this.checkCollisions();
-      this.checkEndbossHitByBottle();
-      this.checkEnemyHitByBottle();
-      this.checkThrowObjects();
-    }, 16);
-  }
+run() {
+  setInterval(() => {
+    this.checkCollisions();
+    this.checkEndbossHitByBottle();
+    this.checkEnemyHitByBottle();
+    this.checkThrowObjects();
 
-  // === Statusbar aktualisieren ===
+  }, 1000 / 60); // 60 FPS
+}
+
 updateBottleStatusBar() {
-    // Berechne Prozente basierend auf character.bottles
     const percentage = (this.character.bottles / this.totalBottles) * 100;
     this.StatusBarBottle.setPercentage(percentage);
 }
 
-  // === Kollisionen prüfen ===
   checkCollisions() {
     this.checkEnemyCollision();
     this.checkCoinCollision();
     this.checkBottleCollision();
   }
 
-  checkEnemyCollision() {
-    this.level.enemies.forEach((enemy) => {
-      if (this.character.isColliding(enemy)) {
-        const jumpedOnEnemy =
-          this.character.speedY < 0 &&
-          this.character.y + this.character.height - this.character.offset.bottom >
-            enemy.y + enemy.offset.top;
+checkEnemyCollision() {
+  const tol = 30;
+  this.level.enemies.forEach(enemy => {
+    if (this.character.isColliding(enemy)) {
+      const prev = this.character.oldY + this.character.height;
+      const curr = this.character.y + this.character.height;
 
-        if (jumpedOnEnemy) {
-          console.log("Jump-Attacke auf Enemy!");
-          enemy.health = 0;
-          enemy.dead = true;
-          enemy.playAnimation(enemy.IMAGES_DEAD);
-        } else {
-          this.character.hit();
-          this.StatusBarHealth.setPercentage(this.character.health);
-        }
+      if (this.character.speedY > 0 && prev <= enemy.y + tol && curr >= enemy.y - tol) {
+        enemy.dead = true;
+        enemy.playAnimation(enemy.IMAGES_DEAD);
+        enemy.speed = 0
+        this.character.y = enemy.y - this.character.height;
+        this.character.speedY = -20;
+
+        // Gegner nach 2 Sekunden aus der Liste entfernen
+        setTimeout(() => {
+          const index = this.level.enemies.indexOf(enemy);
+          if (index > -1) this.level.enemies.splice(index, 1);
+        }, 2000);
+
+      } else {
+        this.character.hit();
+        this.StatusBarHealth.setPercentage(this.character.health);
       }
-    });
-  }
+    }
+  });
+}
 
 checkEndbossHitByBottle() {
   for (let i = this.throwableObjects.length - 1; i >= 0; i--) {
@@ -94,13 +99,6 @@ checkEndbossHitByBottle() {
     }
   }
 }
-
-
-
-
-
-
-
 
   checkEnemyHitByBottle() {
     this.throwableObjects.forEach((bottle) => {
@@ -163,8 +161,6 @@ checkThrowObjects() {
   }
 }
 
-
-  // === Zeichnen ===
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -212,4 +208,8 @@ checkThrowObjects() {
   addObjectsToMap(objects) {
     objects.forEach((o) => this.addToMap(o));
   }
-}
+
+ 
+    }
+  
+

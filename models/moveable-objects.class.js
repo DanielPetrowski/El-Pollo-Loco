@@ -15,17 +15,20 @@ class MovableObject extends DrawableObject {
 
   health = 100;
   lastHit = 0;
+  oldY = 0;
+  dead = false;
 
   
 
-  applyGravity() {
-    setInterval(() => {
-      if (this.isAboveGround() || this.speedY > 0) {
-        this.y -= this.speedY;
-        this.speedY -= this.acceleration;
-      }
-    }, 1000 / 25);
-  }
+applyGravity() {
+  setInterval(() => {
+    if (this.isAboveGround() || this.speedY < 0) {
+      this.oldY = this.y;
+      this.y += this.speedY;  // ⬅️ Plus statt Minus
+      this.speedY += this.acceleration;
+    }
+  }, 1000 / 25);
+}
 
   isAboveGround() {
     
@@ -47,12 +50,14 @@ class MovableObject extends DrawableObject {
     ); 
   }
 
+ 
+
 hit() {
-  // Immer abziehen
+  
   this.health -= 5;
   if (this.health < 0) this.health = 0;
 
-  // Immer Hurt starten (Animation)
+  
   this.lastHit = new Date().getTime();
 }
 
@@ -77,7 +82,11 @@ hit() {
   }
 
   jump() {
-    this.speedY = 30;
+    this.speedY = -30;
     this.justJumped = true
   }
+
+  
 }
+
+
