@@ -1,15 +1,269 @@
+
 body {
-    margin: 0;
-    min-height: 100vh;   
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-   background-image:url("img/5_background/desert.jpg") ;
-    
-    background-size: cover;
-    
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: black;
+  background-image: url('img/5_background/desert.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+}
+
+h1 {
+  margin: 20px;
+  font-size: 4rem;
+  color: #ffeb3b;
+  text-shadow: 4px 4px 0px #ff5722, 8px 8px 0px #d84315, 12px 12px 0px #000000;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  font-family: 'Impact', 'Arial Black', sans-serif;
+  font-weight: normal;
 }
 
 canvas {
-    background-color: black;
+  background-color: black;
+  border: 6px solid #000000;
+  border-radius: 15px;
+  box-shadow: 0 0 0 3px #ffd700, 0 15px 40px rgba(0, 0, 0, 0.7);
+  background: #87ceeb;
+  position: relative;
+}
+
+.game-screen {
+  position: relative;
+  width: 720px;
+  height: 480px;
+}
+
+.start-screen {
+  background-image: url('./img/9_intro_outro_screens/start/startscreen_2.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+  border: 6px solid #000000;
+  border-radius: 15px;
+  position: absolute;
+  z-index: 10;
+}
+
+.start-button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 40px;
+  padding-left: 40px;
+  padding-top: 20px;
+}
+
+.fullscreen-volume-container {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 40px;
+  padding-right: 70px;
+}
+
+.audio-btn {
+  position: absolute;
+  top: 26px;
+  right: 20px;
+  z-index: 20;
+  width: 55px;
+  height: 57px;
+  border-radius: 8px;
+  font-size: 24px;
+  padding: 0;
+}
+
+.gameover-screen {
+  background-image: url('img/You won, you lost/You lost.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  height: 100%;
+  width: 100%;
+  border: 6px solid #000000;
+  border-radius: 15px;
+  position: absolute;
+  z-index: 10;
+  display: none;
+}
+
+.win-screen {
+  background-image: url('./img/You won, you lost/You won A.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  height: 100%;
+  width: 100%;
+  border: 6px solid #000000;
+  border-radius: 15px;
+  position: absolute;
+  z-index: 10;
+  display: none;
+}
+
+.gameover-button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  margin-top: 20px;
+}
+
+button {
+  font-family: AguDisplay;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 20px;
+  border: 2px solid #8b4513;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #ffa500;
+}
+
+button img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+.impressum {
+  position: absolute;
+  background-color: #d3843a;
+  height: 400px;
+  width: 600px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 50px;
+  border-radius: 10px;
+}
+
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.impressum h1 {
+  color: black;
+  text-align: center;
+}
+
+.impressum-btn {
+  font-family: 'zabras', Arial, Helvetica, sans-serif;
+  font-size: 32px;
+  border: none;
+  background: none;
+}
+
+.impressum-btn:hover {
+  cursor: pointer;
+  color: white;
+}
+
+.impressum-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.arrow-back {
+  height: 40px;
+  width: 40px;
+  position: absolute;
+  right: 50px;
+  top: 10px;
+}
+
+.arrow-back:hover {
+  cursor: pointer;
+}
+
+.controls {
+  position: absolute;
+  width: 100%;
+  display: none;
+  font-family: AguDisplay;
+  justify-content: center;
+  align-items: end;
+  align-content: end;
+  gap: 10px;
+  z-index: 10;
+  margin-top: 330px;
+}
+
+
+.rotate-phone {
+  display: none;
+  position: fixed;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+}
+
+.rotate-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (max-width: 768px) {
+  .rotate-phone {
+    display: flex;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+}
+
+/* X-Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+}
+
+/* XX-Large devices (larger desktops, 1400px and up) */
+@media (min-width: 1400px) {
+}
+
+@media (hover: none) and (orientation: landscape) {
+  h1 {
+    display: none;
+  }
+  .rotate-phone {
+    display: none;
+  }
+
+  .controls {
+    display: none;
+  }
+}
+
+@media (hover: none) and (orientation: portrait) and (max-width: 1200px) {
+  h1 {
+    display: none;
+  }
+
+  .game-screen {
+    display: none;
+  }
+
+  .rotate-phone {
+    display: flex;
+  }
 }

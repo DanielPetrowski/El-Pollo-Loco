@@ -1,27 +1,20 @@
-class Coin extends CollectableObject {
-  IMAGES = ["img/8_coin/coin_1.png", "img/8_coin/coin_2.png"];
+class Coins extends MovableObject {
+  height = 100;
+  width = 100;
 
   offset = {
-   
-    top: 55,
-    bottom: 55,
-    left: 35,
-    right: 35,       
-     } ;
+    top: 35,
+    right: 35,
+    bottom: 35,
+    left: 35
+  };
 
-  constructor() {
-    super();
-    this.loadImages(this.IMAGES);
-    this.img = this.imageCache[this.IMAGES[0]];
-    this.x = 400 + Math.floor(Math.random() * 1800);
-    this.y = 100 + Math.floor(Math.random() * 200);
+  IMAGES_COINS = ['img/8_coin/coin_1.png'];
 
-    this.animate();
-  }
-
-  animate() {
-    setInterval(() => {
-      this.playAnimation(this.IMAGES);
-    }, 700);
+  constructor(x, y) {
+    super().loadImage('img/8_coin/coin_1.png');
+    this.loadImages(this.IMAGES_COINS);
+    this.x = x;
+    this.y = y;
   }
 }

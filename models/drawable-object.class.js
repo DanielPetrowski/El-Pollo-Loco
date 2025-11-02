@@ -1,10 +1,10 @@
 class DrawableObject {
   x = 120;
-  y = 280;
-  img;
+  y = 270;
   height = 150;
   width = 100;
-  imageCache = {}; 
+  img;
+  imageCache = {};
   currentImage = 0;
 
   loadImage(path) {
@@ -12,45 +12,35 @@ class DrawableObject {
     this.img.src = path;
   }
 
+  draw(ctx) {
+    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+  }
+
+   drawFrame(ctx) {
+    if (
+      this instanceof Character ||
+      this instanceof Chicken ||
+      this instanceof SmallChicken ||
+      this instanceof Endboss ||
+      this instanceof Coins ||
+      this instanceof Bottles
+    ) {
+      // Blue rectangle
+      ctx.beginPath();
+      ctx.lineWidth = '5';
+      ctx.strokeStyle = 'blue';
+      ctx.rect(this.x, this.y, this.width, this.height);
+      ctx.stroke();
+
+     
+    }
+  } 
+
   loadImages(arr) {
-   
     arr.forEach((path) => {
       let img = new Image();
       img.src = path;
       this.imageCache[path] = img;
     });
   }
-
-  draw(ctx) {
-    if (this.visible !== false){
-    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-  }
-}
-  
-  drawFrame(ctx) {
-
-    if (this instanceof Character || this instanceof Chicken || this instanceof SmallChicken || this instanceof Coin || this instanceof Bottle || this instanceof Endboss)  {
-      ctx.beginPath();
-      ctx.lineWidth = "5";
-      ctx.strokeStyle = "blue";
-      ctx.rect(
-        this.x + this.offset.left,
-        this.y + this.offset.top,
-        this.width - this.offset.left - this.offset.right,
-        this.height - this.offset.top - this.offset.bottom
-      );
-      ctx.stroke();
-    }
-  }
-
-
-  playAnimation(images) {
-    let i = this.currentImage % images.length; 
-    let path = images[i];
-    this.img = this.imageCache[path];
-    this.currentImage++;
-}
-
-
-
 }

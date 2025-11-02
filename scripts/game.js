@@ -1,62 +1,87 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+let startScreen = document.getElementById('startScreen');
+let gameOverScreen = document.getElementById('gameoverScreen');
+let winScreen = document.getElementById('winScreen');
+let impressum = document.getElementById('impressum');
+let controls = document.getElementById('controls');
+let audioButton = document.getElementById('audio_button');
+let rotatePhone = document.getElementById('rotatePhone');
+let intervalIds = [];
+let soundHub;
 
 function init() {
-  canvas = document.getElementById("canvas");
-  world = new World(canvas, keyboard);
+  soundHub = new SoundHub();
+  soundHub.initButton();
+  controls.style.display = 'flex';
 }
 
-window.addEventListener("keydown", (e) => {
-  
-  if (e.key === " ") {
-    keyboard.SPACE = true;
-  }
+function startGame() {
+  canvas = document.getElementById('canvas');
+  world = new World(canvas, keyboard);
+  startScreen.style.display = 'none';
+  controls.style.display = 'none';
+}
 
-  if (e.key === "ArrowLeft") {
-    keyboard.LEFT = true;
-  }
+function backToStartScreen() {
+  startScreen.style.display = 'block';
+  gameOverScreen.style.display = 'none';
+  winScreen.style.display = 'none';
+  canvas.style.display = 'block';
+  controls.style.display = 'flex';
+  audioButton.style.display = 'block';
+}
 
-  if (e.key === "ArrowUp") {
-    keyboard.UP = true;
-  }
+function gameOver() {
+  gameOverScreen.style.display = 'block';
+  clearAllIntervals();
+  canvas.style.display = 'none';
+  audioButton.style.display = 'none';
+}
 
-  if (e.key === "ArrowRight") {
-    keyboard.RIGHT = true;
-  }
+function restartGame() {
+  gameOverScreen.style.display = 'none';
+  winScreen.style.display = 'none';
+  clearAllIntervals();
+  intervalIds = [];
+  startGame();
+  canvas.style.display = 'block';
+  audioButton.style.display = 'block';
+}
 
-  if (e.key === "ArrowDown") {
-    keyboard.DOWN = true;
-  }
+function playerWon() {
+  winScreen.style.display = 'block';
+  clearAllIntervals();
+  audioButton.style.display = 'none';
+}
 
-  if (e.key === "d" || e.key === "D") {
-    keyboard.D = true;
-  }
-});
+function toggleAudio() {
+  soundHub.toggleAudio();
 
-window.addEventListener("keyup", (e) => {
- 
-  if (e.key === " ") {
-    keyboard.SPACE = false;
+  if (soundHub.isPlaying) {
+    SoundHub.backgroundAudio.loop = true;
+    
+    SoundHub.backgroundAudio.play();
+  } else {
+    SoundHub.pauseAll();
   }
+}
 
-  if (e.key === "ArrowLeft") {
-    keyboard.LEFT = false;
-  }
+function setStoppableInterval(fn, ms) {
+  let id = setInterval(fn, ms);
+  intervalIds.push(id);
+}
 
-  if (e.key === "ArrowUp") {
-    keyboard.UP = false;
-  }
+function clearAllIntervals() {
+  intervalIds.forEach(clearInterval);
+  intervalIds = [];
+}
 
-  if (e.key === "ArrowRight") {
-    keyboard.RIGHT = false;
-  }
+function showImpressum() {
+  impressum.showModal();
+}
 
-  if (e.key === "ArrowDown") {
-    keyboard.DOWN = false;
-  }
-
-  if (e.key === "d" || e.key === "D") {
-    keyboard.D = false;
-  }
-});
+function closeImpressum() {
+  impressum.close();
+}

@@ -1,32 +1,60 @@
 class StatusBar extends DrawableObject {
-  percentage = 0;
+  IMAGES_HEALTH = [
+    'img/7_statusbars/1_statusbar/2_statusbar_health/green/0.png',
+    'img/7_statusbars/1_statusbar/2_statusbar_health/green/20.png',
+    'img/7_statusbars/1_statusbar/2_statusbar_health/green/40.png',
+    'img/7_statusbars/1_statusbar/2_statusbar_health/green/60.png',
+    'img/7_statusbars/1_statusbar/2_statusbar_health/green/80.png',
+    'img/7_statusbars/1_statusbar/2_statusbar_health/green/100.png'
+  ];
 
-  constructor() {
+  IMAGES_BOTTLE = [
+    'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/0.png',
+    'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/20.png',
+    'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/40.png',
+    'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/60.png',
+    'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/80.png',
+    'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/100.png'
+  ];
+
+  IMAGES_COIN = [
+    'img/7_statusbars/1_statusbar/1_statusbar_coin/orange/0.png',
+    'img/7_statusbars/1_statusbar/1_statusbar_coin/orange/20.png',
+    'img/7_statusbars/1_statusbar/1_statusbar_coin/orange/40.png',
+    'img/7_statusbars/1_statusbar/1_statusbar_coin/orange/60.png',
+    'img/7_statusbars/1_statusbar/1_statusbar_coin/orange/80.png',
+    'img/7_statusbars/1_statusbar/1_statusbar_coin/orange/100.png'
+  ];
+
+  percentage;
+
+  constructor(type, positionY) {
     super();
+
+    if (type === 'health') {
+      this.IMAGES = this.IMAGES_HEALTH;
+    } else if (type === 'bottle') {
+      this.IMAGES = this.IMAGES_BOTTLE;
+    } else if (type === 'coin') {
+      this.IMAGES = this.IMAGES_COIN;
+    }
+
+    this.loadImages(this.IMAGES);
+    this.x = 30;
+    this.y = positionY;
     this.width = 200;
     this.height = 60;
-    this.images = [];
+    this.setPercentage(100);
   }
 
-  load(images) {
-    this.images = images;
-    this.loadImages(images);
-  }
-
- 
-setPercentage(percentage) {
-    // Begrenze den Wert auf 0–100%
-    this.percentage = Math.max(0, Math.min(percentage, 100));
-
-    // Lade das passende Bild
-    let path = this.IMAGES[this.resolveImageIndex()]; 
+  setPercentage(percentage) {
+    this.percentage = percentage;
+    let path = this.IMAGES[this.resolveImageIndex()];
     this.img = this.imageCache[path];
-}
-
-
+  }
 
   resolveImageIndex() {
-    if (this.percentage == 100) {
+    if (this.percentage >= 100) {
       return 5;
     } else if (this.percentage >= 80) {
       return 4;
