@@ -1,23 +1,57 @@
-class Bottles extends MovableObject {
-  height = 60;
-  width = 50;
+/**
+ * Represents a collectible salsa bottle in the game that players can pick up or interact with.
+ * @class
+ * @extends MovableObject
+ */
+class Bottle extends MovableObject {
+    height = 80;
+    width = 70;
+    y = 350;
 
-  offset = {
-    top: 10,
-    right: 8,
-    bottom: 5,
-    left: 20
-  };
+    /**
+     * List of image paths used to display the salsa bottle.
+     * @type {string[]}
+     */
+    BOTTLE_IMAGES = [
+        './img/6_salsa_bottle/1_salsa_bottle_on_ground.png',
+        './img/6_salsa_bottle/2_salsa_bottle_on_ground.png'
+    ];
 
-  IMAGES_BOTTLES = [
-    'img/6_salsa_bottle/1_salsa_bottle_on_ground.png',
-    'img/6_salsa_bottle/2_salsa_bottle_on_ground.png'
-  ];
+    /**
+     * Collision offset values for detecting interactions with the bottle.
+     * @type {{top: number, left: number, right: number, bottom: number}}
+     */
+    offset = {
+        top: 10,
+        left: 20,
+        right: 30,
+        bottom: 10
+    };
 
-  constructor(x) {
-    super().loadImage('img/6_salsa_bottle/1_salsa_bottle_on_ground.png');
-    this.loadImages(this.IMAGES_BOTTLES);
-    this.x = x;
-    this.y = 380;
-  }
+    /**
+     * Index of the randomly selected image to display for this bottle.
+     * @type {number}
+     */
+    randomImg;
+
+    /**
+     * Creates a new Bottle instance, randomly selecting its image and setting a random horizontal position.
+     */
+    constructor() {
+        super();
+        this.getImage();
+        if (this.randomImg === 0) {
+            this.loadImage('./img/6_salsa_bottle/1_salsa_bottle_on_ground.png');
+        } else {
+            this.loadImage('./img/6_salsa_bottle/2_salsa_bottle_on_ground.png');
+        }
+        this.x = 300 + Math.random() * 1700;
+    }
+
+    /**
+     * Randomly selects an image index for the salsa bottle.
+     */
+    getImage() {
+        this.randomImg = Math.floor(Math.random() * 2);
+    }
 }

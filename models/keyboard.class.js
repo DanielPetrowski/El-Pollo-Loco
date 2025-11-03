@@ -1,51 +1,41 @@
+/**
+ * Represents the keyboard input for controlling the game character.
+ * @class
+ */
 class Keyboard {
-  RIGHT = false;
-  LEFT = false;
-  UP = false;
-  DOWN = false;
-  SPACE = false;
-  D = false;
-  constructor() {
-    window.addEventListener('keydown', (event) => {
-      if (event.keyCode == 39) {
-        keyboard.RIGHT = true;
-      }
-      if (event.keyCode == 37) {
-        keyboard.LEFT = true;
-      }
-      if (event.keyCode == 38) {
-        keyboard.UP = true;
-      }
-      if (event.keyCode == 40) {
-        keyboard.DOWN = true;
-      }
-      if (event.keyCode == 32) {
-        keyboard.SPACE = true;
-      }
-      if (event.keyCode == 68) {
-        keyboard.D = true;
-      }
-    });
+    /**
+     * Indicates whether the left arrow key is pressed.
+     * @type {boolean}
+     */
+    LEFT = false;
 
-    window.addEventListener('keyup', (event) => {
-      if (event.keyCode == 39) {
-        keyboard.RIGHT = false;
-      }
-      if (event.keyCode == 37) {
-        keyboard.LEFT = false;
-      }
-      if (event.keyCode == 38) {
-        keyboard.UP = false;
-      }
-      if (event.keyCode == 40) {
-        keyboard.DOWN = false;
-      }
-      if (event.keyCode == 32) {
-        keyboard.SPACE = false;
-      }
-      if (event.keyCode == 68) {
-        keyboard.D = false;
-      }
-    });
-  }
+    /**
+     * Indicates whether the right arrow key is pressed.
+     * @type {boolean}
+     */
+    RIGHT = false;
+
+    /**
+     * Indicates whether the up arrow key is pressed.
+     * @type {boolean}
+     */
+    UP = false;
+
+    /**
+     * Indicates whether the down arrow key is pressed.
+     * @type {boolean}
+     */
+    DOWN = false;
+
+    /**
+     * Indicates whether the spacebar is pressed.
+     * @type {boolean}
+     */
+    SPACE = false;
+
+    /**
+     * Indicates whether the 'X' key is pressed.
+     * @type {boolean}
+     */
+    D = false;
 }

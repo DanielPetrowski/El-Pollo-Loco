@@ -1,89 +1,110 @@
 <!DOCTYPE html>
-<html lang="de">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
-    <link rel="icon" type="image/x-icon" href="img/Favicon/kaktus.png" />
-    <link rel="shortcut icon" href="./img/Favicon/Chicken.png" type="image/x-icon">
+<html lang="de" translate="no" user-scalable="no">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <title>El Pollo Loco</title>
-    <script src="models/drawable-object.class.js"></script>
+    <link rel="stylesheet" href="Impressum.css">
+    <link rel="stylesheet" href="style.css">
+    
+    <link rel="icon" type="image/x-icon" href="img/Favicon/Chicken.png">
+</head>
+
+<body>
+    <h1>El Pollo Loco</h1>
+
+    
+        <div id="turnPhoneMessage" class="turnPhoneMessage">Turn your phone<br>to play</div>
+
+        <div class="startScreenContainer screens" id="startScreenContainer">
+            <img src="./img/9_intro_outro_screens/start/startscreen_2.png" alt="">
+            <div class="startScreenButtons">
+                <button class="startButton" id="startButton" onclick="startGame()">Start Game</button>
+            </div>
+        </div>
+
+        <div class="youWonScreen screens d-none" id="wonGameScreen">
+            <img src="img/You won, you lost/You Win A.png" alt="You Win">
+            <button class="restartButton" onclick="startGame()">Restart Game</button>
+        </div>
+
+        <div class="gameOverScreen screens d-none" id="gameOverScreen">
+            <img src="./img/9_intro_outro_screens/game_over/game over!.png" alt="">
+            <button class="restartButton" onclick="startGame()">Restart Game</button>
+        </div>
+
+        <div class="hud d-none" id="hud">
+            <div id="panelup" class="panel panelup panel-wrapper">
+                <button class="controlButtons" id="btnMute" onclick="toggleMute()">
+                    <img id="muteIcon" src="img/icons/activeSound.png" alt="Mute Icon" width="32" height="32">
+                </button>
+               
+            </div>
+
+            <div id="paneldown" class="panel paneldown d-none">
+                <div class="panel-wrapper">
+                    <button class="controlButtons" id="btnLeft">
+                        <img id="leftIcon" src="img/icons/arrowLeft.png" alt="Left Icon" width="32" height="32">
+                    </button>
+                    <button class="controlButtons" id="btnRight">
+                        <img id="rightIcon" src="img/icons/arrowRight.png" alt="Right Icon" width="44" height="44">
+                    </button>
+                </div>
+
+                <div class="panel-wrapper">
+                    <button class="controlButtons" id="btnJump">
+                        <img id="jumpIcon" src="img/icons/jump.png" alt="Jump Icon" width="60" height="60">
+                    </button>
+                    <button class="controlButtons" id="btnThrow">
+                        <img id="throwIcon" src="img/icons/bottle.png" alt="Throw Icon" width="60" height="60">
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <canvas class="d-none" id="canvas" width="720" height="480"></canvas>
+    </div>
+
+    <div class="controls-box">
+        <h2>CONTROL</h2>
+        <div class="controls">
+            <div>WALK - Arrow keys</div>
+            <div>JUMP - Space</div>
+            <div>THROW - D</div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p class="copyright">
+                
+                <a href="Impressum.html" title="Legal Notice" aria-label="Legal Notice (page with legal information)">Legal </a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="./models/world.class.js"></script>
+    <script src="./models/drawable-object.class.js"></script>
     <script src="./models/moveable-objects.class.js"></script>
     <script src="./models/character.class.js"></script>
     <script src="./models/chicken.class.js"></script>
     <script src="./models/small_chicken.class.js"></script>
-    <script src="./models/clouds.class.js"></script>
-    <script src="./models/coins.class.js"></script>
     <script src="./models/bottle.class.js"></script>
-    <script src="./models/status-bar.class.js"></script>
-    
-    <script src="./models/world.class.js"></script>
-    <script src="./models/soundHub.class.js"></script>
+    <script src="./models/coins.class.js"></script>
+    <script src="./models/clouds.class.js"></script>
     <script src="./models/background-object.class.js"></script>
     <script src="./models/keyboard.class.js"></script>
     <script src="./models/level.class.js"></script>
-    <script src="./models/throwable-object.class.js"></script>
-    <script src="./models/endboss.class.js"></script>
+    <script src="./models//endboss.class.js"></script>
+    <script src="./models/bar.class.js"></script>
     <script src="./models/endbossBar.class.js"></script>
+    <script src="./models/health-bar.class.js"></script>
+    <script src="./models/coin-bar.class.js"></script>
+    <script src="./models/bottle-bar.class.js"></script>
+    <script src="./scripts/game.js"></script>
+    <script src="./models/throwable-object.class.js"></script>
     <script src="./levels/level1.js"></script>
-  </head>
+</body>
 
-  <body onload="init()">
-    <h1>El pollo loco</h1>
-
-    <div class="game-screen">
-      <div id="startScreen" class="start-screen">
-        <div class="start-button-container">
-          <button class="start-btn" onclick="startGame()">Start</button>
-          <div class="fullscreen-volume-container">
-            <button onclick="showImpressum()">Impressum</button>
-            <button class="fullScreen-icon" onclick="fullScreen()">
-              <p>&#9974</p>
-            </button>
-          </div>
-        </div>
-        <div class="controls" id="controls">
-          <p>Move Left and Right</p>
-          <p>&#8592</p>
-          <p>&#8594</p>
-          <p>Jump</p>
-          <p>&#8593</p>
-          <p>Throw Bottle</p>
-          <p>D</p>
-        </div>
-      </div>
-
-      <button id="audio_button" class="audio-btn" onclick="toggleAudio()"></button>
-
-      <div id="gameoverScreen" class="gameover-screen">
-        <div class="gameover-button-container">
-          <button class="restart-btn" onclick="restartGame()">Play again</button>
-          <button class="back-btn" onclick="backToStartScreen()">Leave Game</button>
-        </div>
-      </div>
-
-      <div id="winScreen" class="win-screen">
-        <div class="gameover-button-container">
-          <button class="restart-btn" onclick="restartGame()">Play again</button>
-          <button class="back-btn" onclick="backToStartScreen()">Leave Game</button>
-        </div>
-      </div>
-
-      <canvas id="canvas" class="canvas" width="720" height="480"></canvas>
-
-      <dialog id="impressum" class="impressum">
-        <h1>Impressum</h1>
-        
-        <button onclick="closeImpressum()" class="arrow-back">↩</button>
-        <section class="impressum-details">
-         
-        </section>
-      </dialog>
-    </div>
-    <div id="rotatePhone" class="rotate-phone">
-      <img class="rotate-img" src="img/5_background/rotate your phone.jpg" alt="" />
-      <p class="rotate-img"> rotate your Phone</p>
-    </div>
-  </body>
-  <script src="./scripts/game.js"></script>
 </html>

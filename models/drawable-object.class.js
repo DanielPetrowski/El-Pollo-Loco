@@ -1,46 +1,59 @@
+/**
+ * Represents any object in the game that can be drawn on the canvas,
+ * including characters, items, or background elements.
+ * @class
+ */
 class DrawableObject {
-  x = 120;
-  y = 270;
-  height = 150;
-  width = 100;
-  img;
-  imageCache = {};
-  currentImage = 0;
+    x = 120;
+    y = 160;
 
-  loadImage(path) {
-    this.img = new Image();
-    this.img.src = path;
-  }
+    /**
+     * The image currently displayed for this object.
+     * @type {HTMLImageElement}
+     */
+    img;
 
-  draw(ctx) {
-    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-  }
+    width = 100;
+    height = 150;
 
-   drawFrame(ctx) {
-    if (
-      this instanceof Character ||
-      this instanceof Chicken ||
-      this instanceof SmallChicken ||
-      this instanceof Endboss ||
-      this instanceof Coins ||
-      this instanceof Bottles
-    ) {
-      // Blue rectangle
-      ctx.beginPath();
-      ctx.lineWidth = '5';
-      ctx.strokeStyle = 'blue';
-      ctx.rect(this.x, this.y, this.width, this.height);
-      ctx.stroke();
+    /**
+     * Stores preloaded images to improve performance.
+     * @type {Object.<string, HTMLImageElement>}
+     */
+    imageCache = {};
 
-     
+    /**
+     * Tracks the index of the current frame in an animation sequence.
+     * @type {number}
+     */
+    currentImage = 0;
+
+    /**
+     * Loads a single image from the specified file path.
+     * @param {string} path - The path to the image file.
+     */
+    loadImage(path) {
+        this.img = new Image();
+        this.img.src = path;
     }
-  } 
 
-  loadImages(arr) {
-    arr.forEach((path) => {
-      let img = new Image();
-      img.src = path;
-      this.imageCache[path] = img;
-    });
-  }
+    /**
+     * Draws this object onto the provided canvas context.
+     * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
+     */
+    draw(ctx) {
+        ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    }
+
+    /**
+     * Preloads a set of images and stores them in the object's cache for later use.
+     * @param {string[]} arr - An array containing the paths of images to preload.
+     */
+    loadImages(arr) {
+        arr.forEach(path => {
+            let img = new Image();
+            img.src = path;
+            this.imageCache[path] = img;
+        });
+    }
 }
