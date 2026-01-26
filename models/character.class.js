@@ -1,29 +1,31 @@
 /**
- * Represents the main playable character in the game.
- * Inherits movement, gravity, and animation features from the MovableObject class.
+ * Represents the main character in the game.
+ * Extends the MovableObject class to inherit movement and gravity functionality.
  * @class
  */
+
+let walkingPlaying = false
 class Character extends MovableObject {
     /**
-     * Height of the character sprite.
+     * The height of the character.
      * @type {number}
      */
     height = 280;
 
     /**
-     * Width of the character sprite.
+     * The width of the character.
      * @type {number}
      */
     width = 140;
 
     /**
-     * Vertical position of the character on the canvas.
+     * The y-coordinate of the character.
      * @type {number}
      */
     y = 160;
 
     /**
-     * Image paths used for the walking animation.
+     * Array of image paths for the walking animation.
      * @type {string[]}
      */
     IMAGES_WALKING = [
@@ -36,7 +38,47 @@ class Character extends MovableObject {
     ];
 
     /**
-     * Image paths used for the idle animation.
+     * Array of image paths for the jumping animation.
+     * @type {string[]}
+     */
+    IMAGES_JUMPING = [
+        'img/2_character_pepe/3_jump/J-31.png',
+        'img/2_character_pepe/3_jump/J-32.png',
+        'img/2_character_pepe/3_jump/J-33.png',
+        'img/2_character_pepe/3_jump/J-34.png',
+        'img/2_character_pepe/3_jump/J-35.png',
+        'img/2_character_pepe/3_jump/J-36.png',
+        'img/2_character_pepe/3_jump/J-37.png',
+        'img/2_character_pepe/3_jump/J-38.png',
+        'img/2_character_pepe/3_jump/J-39.png'
+    ];
+
+    /**
+     * Array of image paths for the dead animation.
+     * @type {string[]}
+     */
+    IMAGES_DEAD = [
+        'img/2_character_pepe/5_dead/D-51.png',
+        'img/2_character_pepe/5_dead/D-52.png',
+        'img/2_character_pepe/5_dead/D-53.png',
+        'img/2_character_pepe/5_dead/D-54.png',
+        'img/2_character_pepe/5_dead/D-55.png',
+        'img/2_character_pepe/5_dead/D-56.png',
+        'img/2_character_pepe/5_dead/D-57.png'
+    ];
+
+    /**
+     * Array of image paths for the hurt animation.
+     * @type {string[]}
+     */
+    IMAGES_HURT = [
+        'img/2_character_pepe/4_hurt/H-41.png',
+        'img/2_character_pepe/4_hurt/H-42.png',
+        'img/2_character_pepe/4_hurt/H-43.png',
+    ];
+
+    /**
+     * Array of image paths for the idle animation.
      * @type {string[]}
      */
     IMAGES_IDLE = [
@@ -53,7 +95,7 @@ class Character extends MovableObject {
     ];
 
     /**
-     * Image paths used for the extended idle animation.
+     * Array of image paths for the long idle animation.
      * @type {string[]}
      */
     IMAGES_IDLE_LONG = [
@@ -70,77 +112,81 @@ class Character extends MovableObject {
     ];
 
     /**
-     * Image paths used for the jumping animation.
-     * @type {string[]}
-     */
-    IMAGES_JUMPING = [
-        'img/2_character_pepe/3_jump/J-31.png',
-        'img/2_character_pepe/3_jump/J-32.png',
-        'img/2_character_pepe/3_jump/J-33.png',
-        'img/2_character_pepe/3_jump/J-34.png',
-        'img/2_character_pepe/3_jump/J-35.png',
-        'img/2_character_pepe/3_jump/J-36.png',
-        'img/2_character_pepe/3_jump/J-37.png',
-        'img/2_character_pepe/3_jump/J-38.png',
-        'img/2_character_pepe/3_jump/J-39.png'
-    ];
-
-    /**
-     * Image paths used for the hurt animation.
-     * @type {string[]}
-     */
-    IMAGES_HURT = [
-        'img/2_character_pepe/4_hurt/H-41.png',
-        'img/2_character_pepe/4_hurt/H-42.png',
-        'img/2_character_pepe/4_hurt/H-43.png',
-    ];
-
-    /**
-     * Image paths used for the death animation.
-     * @type {string[]}
-     */
-    IMAGES_DEAD = [
-        'img/2_character_pepe/5_dead/D-51.png',
-        'img/2_character_pepe/5_dead/D-52.png',
-        'img/2_character_pepe/5_dead/D-53.png',
-        'img/2_character_pepe/5_dead/D-54.png',
-        'img/2_character_pepe/5_dead/D-55.png',
-        'img/2_character_pepe/5_dead/D-56.png',
-        'img/2_character_pepe/5_dead/D-57.png'
-    ];
-
-    /**
-     * Reference to the game world object.
+     * Reference to the game world.
      * @type {World}
      */
     world;
 
     /**
-     * Movement speed of the character.
+     * The movement speed of the character.
      * @type {number}
      */
     speed = 4;
 
     /**
-     * Number of coins collected by the character.
+     * Audio for walking sound.
+     * @type {Audio}
+     */
+    walking_sound = new Audio('Audio/Walking.mp3');
+
+    /**
+     * Audio for jumping sound.
+     * @type {Audio}
+     */
+    jumping_sound = new Audio('Audio/Jump.mp3');
+
+    /**
+     * Audio for hurt sound.
+     * @type {Audio}
+     */
+    hurt_sound = new Audio('Audio/CharacterHit.mp3');
+
+    /**
+     * Audio for dead sound.
+     * @type {Audio}
+     */
+    dead_sound = new Audio('Audio/GameOver.mp3');
+
+    /**
+     * Audio for coin collection sound.
+     * @type {Audio}
+     */
+    coin_sound = new Audio('Audio/CoinCollect.mp3');
+
+    /**
+     * Audio for bottle collection sound.
+     * @type {Audio}
+     */
+    bottle_sound = new Audio('Audio/BottleCollect.mp3');
+
+    /**
+     * Audio for snoring sound.
+     * @type {Audio}
+     */
+    snoring_sound = new Audio('audio/snoring.mp3');
+
+    
+
+    /**
+     * The number of coins collected by the character.
      * @type {number}
      */
     coins = 0;
 
     /**
-     * Number of bottles collected by the character.
+     * The number of bottles collected by the character.
      * @type {number}
      */
     bottles = 0;
 
     /**
-     * Counter for tracking idle time.
+     * The idle time of the character.
      * @type {number}
      */
     idleTime = 0;
 
     /**
-     * Collision detection offsets for each side of the character.
+     * The offset for collision detection.
      * @type {{top: number, bottom: number, left: number, right: number}}
      */
     offset = {
@@ -151,54 +197,16 @@ class Character extends MovableObject {
     };
 
     /**
-     * Indicates whether the character is currently in the air.
+     * Indicates whether the character is above the ground.
      * @type {boolean}
      */
     isCharacterAboveGround = false;
 
-    /**
-     * Flag to track whether the jumping animation is active.
-     */
-    jumpAnimatioon = false;
+    isJumpingAnimationPlaying = false;
 
     /**
-     * Audio object for the walking sound effect.
-     * @type {Audio}
-     */
-    walking_sound = new Audio("audio/Walking.mp3");
-
-    /**
-     * Audio object for the jumping sound effect.
-     * @type {Audio}
-     */
-    jumping_sound = new Audio("audio/Jump.mp3");
-
-    /**
-     * Audio object for the hurt sound effect.
-     * @type {Audio}
-     */
-    hurt_sound = new Audio("audio/CharacterHit.mp3");
-
-    /**
-     * Audio object for the death sound effect.
-     * @type {Audio}
-     */
-    dead_sound = new Audio("audio/GameOver.mp3");
-
-    /**
-     * Audio object for the coin collection sound effect.
-     * @type {Audio}
-     */
-    coin_sound = new Audio("audio/CoinCollect.mp3");
-
-    /**
-     * Audio object for the bottle collection sound effect.
-     * @type {Audio}
-     */
-    bottle_sound = new Audio("audio/BottleCollect.mp3");
-
-    /**
-     * Initializes the character, loads images, applies gravity, and starts animations.
+     * Creates a new Character.
+     * Loads all images, applies gravity, and starts animations.
      */
     constructor() {
         super().loadImage('./img/2_character_pepe/2_walk/W-21.png');
@@ -211,28 +219,29 @@ class Character extends MovableObject {
         this.applyGravity();
         this.animate();
 
-        this.walking_sound.volume = 0.2;
-        this.jumping_sound.volume = 0.2;
-        this.hurt_sound.volume = 0.2;
-        this.dead_sound.volume = 0.2;
-        this.coin_sound.volume = 0.2;
-        this.bottle_sound.volume = 0.2;
+        this.walking_sound.volume = 0.6;
+        this.jumping_sound.volume = 0.6;
+        this.hurt_sound.volume = 0.6;
+        this.dead_sound.volume = 0.6;
+        this.coin_sound.volume = 0.6;
+        this.bottle_sound.volume = 0.6;
+        this.snoring_sound.volume = 0.6;
     }
 
     /**
-     * Starts the character's animations using repeated intervals.
+     * Starts the animation intervals for the character.
      */
     animate() {
-        setStoppableInterval(this.characterMovement.bind(this), 1000 / 60);
-        setStoppableInterval(this.jumpingAnimation.bind(this), 150);
-        setStoppableInterval(this.characterAnimation.bind(this), 50);
-        setStoppableInterval(this.idleAnimation.bind(this), 240);
+        setStoppableInterval(this.handleCharacterMovement.bind(this), 1000 / 60);
+        setStoppableInterval(this.handleCharacterJumpingAnimation.bind(this), 150);
+        setStoppableInterval(this.handleCharacterAnimation.bind(this), 50);
+        setStoppableInterval(this.handleIdleAnimation.bind(this), 240);
     }
 
     /**
-     * Handles character movement based on user input.
+     * Handles the character's movement based on keyboard input.
      */
-    characterMovement() {
+    handleCharacterMovement() {
         this.walking_sound.pause();
         if (this.canMoveRight())
             this.moveRight();
@@ -248,15 +257,38 @@ class Character extends MovableObject {
     }
 
     /**
-     * Plays the appropriate animation based on character state.
+     * Handles the idle animation of the character.
      */
-    characterAnimation() {
+    handleIdleAnimation() {
+        if (!this.world.keyboard.RIGHT && !this.world.keyboard.SPACE && !this.world.keyboard.LEFT && !this.world.keyboard.X && !this.isHurt()) {
+            if (this.idleTime < 20) {
+                this.idleTime++;
+                this.playAnimation(this.IMAGES_IDLE);
+            } else {
+                this.playAnimation(this.IMAGES_IDLE_LONG);
+                if (!mute && this.snoring_sound.readyState == 4) {
+                    this.snoring_sound.play();
+                } else {
+                    this.snoring_sound.pause();
+                    this.snoring_sound.currentTime = 0;
+                }
+            }
+        } else {
+            this.snoring_sound.pause(); // Stops the snoring sound when idle ends
+            this.snoring_sound.currentTime = 0; // Resets the snoring sound
+        }
+    }
+
+    /**
+     * Handles the animation of the character based on its state (e.g., walking, hurt, dead).
+     */
+    handleCharacterAnimation() {
         if (this.isDead()) {
             this.playAnimationOnce(this.IMAGES_DEAD);
             gameOver();
         } else if (this.isHurt()) {
             this.playAnimation(this.IMAGES_HURT);
-            if (!mute) {
+            if (mute == false && this.hurt_sound.readyState == 4) {
                 this.hurt_sound.play();
             }
         } else if (!this.isAboveGround()) {
@@ -268,12 +300,13 @@ class Character extends MovableObject {
     }
 
     /**
-     * Animates the character while jumping.
+     * Handles the jumping animation of the character.
      */
-    jumpingAnimation() {
+    handleCharacterJumpingAnimation() {
         if (this.isAboveGround()) {
-            if (!this.jumpAnimatioon) {
-                this.jumpAnimatioon = true;
+    
+            if (!this.isJumpingAnimationPlaying) {
+                this.isJumpingAnimationPlaying = true;
                 this.currentImage = 0;
             }
 
@@ -281,29 +314,17 @@ class Character extends MovableObject {
             const path = this.IMAGES_JUMPING[i];
             this.img = this.imageCache[path];
             this.currentImage++;
+
         } else {
-            this.jumpAnimatioon = false;
+         
+            this.isJumpingAnimationPlaying = false;
             this.currentImage = 0;
         }
     }
 
     /**
-     * Handles the idle animation when the character is not performing actions.
-     */
-    idleAnimation() {
-        if (!this.world.keyboard.RIGHT && !this.world.keyboard.SPACE && !this.world.keyboard.LEFT && !this.world.keyboard.X && !this.isHurt()) {
-            if (this.idleTime < 20) {
-                this.idleTime++;
-                this.playAnimation(this.IMAGES_IDLE);
-            } else {
-                this.playAnimation(this.IMAGES_IDLE_LONG);
-            }
-        }
-    }
-
-    /**
-     * Checks if the character is allowed to move right.
-     * @returns {boolean}
+     * Checks if the character can move to the right.
+     * @returns {boolean} True if the character can move right, otherwise false.
      */
     canMoveRight() {
         return this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x;
@@ -316,14 +337,21 @@ class Character extends MovableObject {
         super.moveRight();
         this.otherDirection = false;
         this.idleTime = 0;
-        if (this.y > 158 && !mute) {
+        if (this.y > 158 && !mute && this.walking_sound.readyState == 4) {
             this.walking_sound.play();
         }
+       if (this.y > 158 && !mute) {
+        if (!this.walkingPlaying) {
+            this.walking_sound.currentTime = 0;
+            this.walking_sound.play();
+            this.walkingPlaying = true;
+        }
+    }
     }
 
     /**
-     * Checks if the character is allowed to move left.
-     * @returns {boolean}
+     * Checks if the character can move to the left.
+     * @returns {boolean} True if the character can move left, otherwise false.
      */
     canMoveLeft() {
         return this.world.keyboard.LEFT && this.x > 0;
@@ -332,59 +360,84 @@ class Character extends MovableObject {
     /**
      * Moves the character to the left.
      */
-    moveLeft() {
-        super.moveLeft();
-        this.otherDirection = true;
-        this.idleTime = 0;
-        if (this.y > 158 && !mute) {
-            this.walking_sound.play();
-        }
+moveLeft() {
+    super.moveLeft();
+    this.otherDirection = true;
+    this.idleTime = 0;
+
+    // Erster Play-Check wie bei moveRight
+    if (this.y > 158 && !mute && this.walking_sound.readyState == 4) {
+        this.walking_sound.play();
     }
 
+    // Zweiter Play-Check mit walkingPlaying
+    if (this.y > 158 && !mute) {
+        if (!this.walkingPlaying) {
+            this.walking_sound.currentTime = 0;
+            this.walking_sound.play();
+            this.walkingPlaying = true;
+        }
+    }
+}
+
     /**
-     * Checks if the character can perform a jump.
-     * @returns {boolean}
+     * Checks if the character can jump.
+     * @returns {boolean} True if the character can jump, otherwise false.
      */
     canJump() {
         return this.world.keyboard.SPACE && !this.isAboveGround();
     }
 
     /**
-     * Makes the character jump and plays jump sound.
+     * Makes the character jump.
      */
-    jump() {
-        this.jumping_sound = new Audio("audio/Jump.mp3");
-        if (!mute) {
-            this.jumping_sound.play();
-        }
-        this.speedY = 30;
+jump() {
+  if (!mute) {
+    this.jumping_sound.currentTime = 0;
+    this.jumping_sound.play();
+  }
+  this.speedY = 30;
+}
+    /**
+     * Collects coins and plays the coin collection sound.
+     */
+collectCoins() {
+  if (!mute) {
+    this.coin_sound.currentTime = 0;
+    this.coin_sound.play();
+  }
+
+  this.coins += 10;
+  if (this.coins >= 100) {
+    this.buyLife();
+  }
+}
+
+    /**
+     * Buys a life for the character by resetting energy and coins.
+     */
+    buyLife() {
+        this.energy = 100;
+        this.world.healthBar.setPercentage(this.energy);
+        this.coins = 0;
     }
 
     /**
-     * Collects coins and plays a collection sound.
-     */
-    collectCoins() {
-        this.coin_sound = new Audio("audio/CoinCollect.mp3");
-        if (!mute) {
-            this.coin_sound.play();
-        }
-        this.coins += 10;
-    }
-
-    /**
-     * Collects bottles and plays a collection sound.
+     * Collects bottles and plays the bottle collection sound.
      */
     collectBottles() {
-        this.bottle_sound = new Audio("Audio/BottleCollect.mp3");
         if (!mute) {
+            this.bottle_sound.currentTime = 0;
             this.bottle_sound.play();
         }
         this.bottles += 20;
-        if (this.bottles > 100) this.bottles = 100;
+        if (this.bottles > 100) {
+            this.bottles = 100;
+        }
     }
 
     /**
-     * Reduces the number of bottles in inventory.
+     * Reduces the number of bottles the character has.
      */
     reduceBottlesAmount() {
         this.bottles -= 20;

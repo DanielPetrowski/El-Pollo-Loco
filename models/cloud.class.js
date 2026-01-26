@@ -10,19 +10,17 @@ class Cloud extends MovableObject {
      */
     y = 20;
 
-     /**
-     * The width of the cloud.
-     * @type {number}
-     */
-    width = 500;
-
     /**
      * The height of the cloud.
      * @type {number}
      */
     height = 250;
 
-   
+    /**
+     * The width of the cloud.
+     * @type {number}
+     */
+    width = 500;
 
     /**
      * Creates a new Cloud.

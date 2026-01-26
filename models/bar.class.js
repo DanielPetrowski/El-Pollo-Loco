@@ -1,55 +1,55 @@
 /**
- * Represents a bar in the game (e.g., health bar, energy bar).
- * Inherits drawable capabilities from the DrawableObject class.
+ * Represents a bar (e.g., health bar, energy bar) in the game.
+ * Extends the DrawableObject class to inherit drawable functionality.
  * @class
  */
 class Bar extends DrawableObject {
     /**
-     * X-coordinate of the bar.
+     * The x-coordinate of the bar.
      * @type {number}
      */
     x = 0;
 
     /**
-     * Y-coordinate of the bar.
+     * The y-coordinate of the bar.
      * @type {number}
      */
     y = -3;
 
     /**
-     * Height of the bar in pixels.
+     * The height of the bar.
      * @type {number}
      */
     height = 60;
 
     /**
-     * Width of the bar in pixels.
+     * The width of the bar.
      * @type {number}
      */
     width = 200;
 
     /**
-     * Current percentage value of the bar (e.g., health or energy percentage).
+     * The current percentage value of the bar (e.g., health percentage).
      * @type {number}
      */
     percentage;
 
     /**
-     * Array of image paths representing different visual states of the bar.
+     * An array of image paths representing different states of the bar.
      * @type {string[]}
      */
     IMAGES = [];
 
     /**
-     * Creates a new Bar instance.
+     * Creates a new Bar.
      */
     constructor() {
         super();
     }
 
     /**
-     * Updates the bar's percentage value and refreshes the displayed image.
-     * @param {number} percentage - Percentage value to set (0-100).
+     * Sets the percentage value of the bar and updates the displayed image accordingly.
+     * @param {number} percentage - The percentage value to set (0-100).
      */
     setPercentage(percentage) {
         this.percentage = percentage;
@@ -58,8 +58,8 @@ class Bar extends DrawableObject {
     }
 
     /**
-     * Determines the index of the image to display based on the current percentage.
-     * @returns {number} Index of the image corresponding to the current percentage.
+     * Resolves the image index based on the current percentage value.
+     * @returns {number} The index of the image to display.
      */
     resolveImageIndex() {
         if (this.percentage == 100) {

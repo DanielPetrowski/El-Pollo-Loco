@@ -1,12 +1,11 @@
 /**
- * Represents a game object that can move and interact with other objects.
- * This includes characters, enemies, and items that have motion and physics.
+ * Represents a movable object in the game, such as characters or items.
  * @class
  * @extends DrawableObject
  */
 class MovableObject extends DrawableObject {
     /**
-     * Horizontal movement speed of the object.
+     * The horizontal speed of the object.
      * @type {number}
      */
     speed = 0.15;
@@ -18,37 +17,37 @@ class MovableObject extends DrawableObject {
     otherDirection = false;
 
     /**
-     * Vertical movement speed of the object.
+     * The vertical speed of the object.
      * @type {number}
      */
     speedY = 0;
 
     /**
-     * Acceleration applied to vertical movement (e.g., gravity effect).
+     * The acceleration applied to the object.
      * @type {number}
      */
     acceleration = 2;
 
     /**
-     * The object's current energy or health level.
+     * The energy level of the object.
      * @type {number}
      */
     energy = 100;
 
     /**
-     * Timestamp of the last hit the object received.
+     * The timestamp of the last hit the object received.
      * @type {number}
      */
     lastHit = 0;
 
     /**
-     * Interval ID used for applying gravity at regular intervals.
+     * The interval ID for applying gravity.
      * @type {number}
      */
     applyGravityInterval;
 
     /**
-     * Collision offsets to fine-tune hitbox detection.
+     * Offset values for collision detection.
      * @type {{top: number, left: number, right: number, bottom: number}}
      */
     offset = {
@@ -57,11 +56,6 @@ class MovableObject extends DrawableObject {
         right: 0,
         bottom: 0
     };
-
-    /**
-     * Tracks the current frame index for different animations.
-     * @type {{idle: number, idleLong: number, walk: number, jump: number, hurt: number, dead: number}}
-     */
     animationIndexes = {
         idle: 0,
         idleLong: 0,
@@ -73,8 +67,8 @@ class MovableObject extends DrawableObject {
 
     /**
      * Checks if this object is colliding with another movable object.
-     * @param {MovableObject} mo - The other object to check collision with.
-     * @returns {boolean} True if the objects overlap, false otherwise.
+     * @param {MovableObject} mo - The other movable object to check collision with.
+     * @returns {boolean} True if the objects are colliding, false otherwise.
      */
     isColliding(mo) {
         return this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
@@ -84,7 +78,7 @@ class MovableObject extends DrawableObject {
     }
 
     /**
-     * Continuously applies gravity to the object, causing it to fall if above ground.
+     * Applies gravity to the object, causing it to fall if above ground.
      */
     applyGravity() {
         setStoppableInterval(() => {
@@ -96,41 +90,39 @@ class MovableObject extends DrawableObject {
     }
 
     /**
-     * Determines if the object is above the ground level.
-     * @returns {boolean} True if the object is above ground, otherwise false.
+     * Checks if the object is above the ground.
+     * @returns {boolean} True if the object is above the ground, false otherwise.
      */
     isAboveGround() {
         if (this instanceof ThrowableObject) {
             return true;
         } else {
-            return this.y < 160;
+            return this.y < 159;
         }
     }
 
     /**
-     * Moves the object to the right by its horizontal speed.
+     * Moves the object to the right based on its speed.
      */
     moveRight() {
         this.x += this.speed;
     }
 
     /**
-     * Moves the object to the left by its horizontal speed.
+     * Moves the object to the left based on its speed.
      */
     moveLeft() {
         this.x -= this.speed;
     }
 
     /**
-     * Plays a looping animation by cycling through a set of images.
-     * @param {string[]} images - Array of image paths for the animation.
-     * @param {string} [type='default'] - Type of animation to track in animationIndexes.
+     * Plays an animation by cycling through the provided images.
+     * @param {string[]} images - The array of image paths for the animation.
      */
     playAnimation(images, type = 'default') {
         if (!this.animationIndexes[type] && this.animationIndexes[type] !== 0) {
             this.animationIndexes[type] = 0;
         }
-
         let i = this.animationIndexes[type] % images.length;
         let path = images[i];
         this.img = this.imageCache[path];
@@ -138,9 +130,8 @@ class MovableObject extends DrawableObject {
     }
 
     /**
-     * Plays an animation once, cycling through the provided images only up to the last frame.
-     * @param {string[]} images - Array of image paths for the animation.
-     * @param {string} [type='default'] - Type of animation to track in animationIndexes.
+     * Plays an animation once by cycling through the provided images.
+     * @param {string[]} images - The array of image paths for the animation.
      */
     playAnimationOnce(images, type = 'default') {
         let i = this.animationIndexes[type] % images.length;
@@ -152,8 +143,8 @@ class MovableObject extends DrawableObject {
     }
 
     /**
-     * Reduces the object's energy when it takes damage.
-     * @param {number} damage - Amount of damage to apply.
+     * Reduces the energy of the object when it takes damage.
+     * @param {number} damage - The amount of damage to apply.
      */
     hit(damage) {
         this.energy -= damage;
@@ -165,16 +156,16 @@ class MovableObject extends DrawableObject {
     }
 
     /**
-     * Checks if the object is dead (energy has reached 0 or below).
-     * @returns {boolean} True if dead, false otherwise.
+     * Checks if the object is dead (energy is 0 or less).
+     * @returns {boolean} True if the object is dead, false otherwise.
      */
     isDead() {
         return this.energy <= 0;
     }
 
     /**
-     * Determines if the object is in a hurt state (recently received damage).
-     * @returns {boolean} True if the object was hit within the last 0.3 seconds.
+     * Checks if the object is currently hurt (recently hit).
+     * @returns {boolean} True if the object is hurt, false otherwise.
      */
     isHurt() {
         let timepassed = new Date().getTime() - this.lastHit;

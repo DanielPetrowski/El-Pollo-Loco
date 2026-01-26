@@ -1,30 +1,28 @@
 /**
  * Represents a background object in the game.
- * Inherits movement capabilities from the MovableObject class.
+ * Extends the MovableObject class to inherit movement-related functionality.
  */
 class BackgroundObject extends MovableObject {
     /**
-     * Width of the background object in pixels.
+     * The width of the background object.
      * @type {number}
      */
     width = 720;
 
     /**
-     * Height of the background object in pixels.
+     * The height of the background object.
      * @type {number}
      */
     height = 480;
 
     /**
-     * Creates a new BackgroundObject instance.
-     * @param {string} imagePath - Path to the image file for the background object.
-     * @param {number} x - X-coordinate position of the background object.
+     * Creates an instance of BackgroundObject.
+     * @param {string} imagePath - The path to the image file for the background object.
+     * @param {number} x - The x-coordinate position of the background object.
      */
     constructor(imagePath, x) {
         super().loadImage(imagePath);
         this.x = x;
-        this.y = 480 - this.height; // Position the object at the bottom of the canvas.
+        this.y = 480 - this.height;
     }
-
-    
 }

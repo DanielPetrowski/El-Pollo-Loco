@@ -1,16 +1,16 @@
 /**
- * Represents the health bar of the end boss in the game.
+ * Represents the lifebar of the end boss in the game.
  * @class
  * @extends Bar
  */
-class EndbossHealthBar extends Bar {
+class EndbossLifebar extends Bar {
     x = 100;
     y = 70;
     height = 40;
     width = 160;
 
     /**
-     * A collection of image paths showing different health levels of the end boss.
+     * Array of image paths representing different states of the end boss lifebar.
      * @type {string[]}
      */
     IMAGES = [
@@ -23,9 +23,8 @@ class EndbossHealthBar extends Bar {
     ];
 
     /**
-     * Initializes a new EndbossHealthBar instance.
-     * Loads the health bar images and sets the initial position and percentage.
-     * @param {number} x - The starting x-coordinate for the lifebar.
+     * Creates a new instance of the EndbossLifebar.
+     * @param {number} x - The initial x-coordinate of the lifebar.
      */
     constructor(x) {
         super();
@@ -35,10 +34,10 @@ class EndbossHealthBar extends Bar {
     }
 
     /**
-     * Updates the horizontal position of the lifebar relative to the end boss.
-     * @param {number} newX - The updated x-coordinate of the lifebar.
+     * Updates the position of the lifebar based on the new x-coordinate.
+     * @param {number} newX - The new x-coordinate for the lifebar.
      */
-    moveHealthbar(newX) {
+    moveLifebar(newX) {
         this.x = newX + 50;
     }
 }

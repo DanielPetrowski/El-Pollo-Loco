@@ -1,14 +1,14 @@
 /**
- * Represents a collectible coin in the game.
- * Extends MovableObject to inherit movement capabilities.
+ * Represents a coin in the game that the player can collect.
  * @class
+ * @extends MovableObject
  */
 class Coin extends MovableObject {
     height = 100;
     width = 100;
 
     /**
-     * List of image paths used for the coin's animation frames.
+     * Array of image paths for the coin animation.
      * @type {string[]}
      */
     BOTTLE_IMAGES = [
@@ -17,7 +17,7 @@ class Coin extends MovableObject {
     ];
 
     /**
-     * Collision detection offsets for each side of the coin.
+     * Offset values for collision detection.
      * @type {{top: number, left: number, right: number, bottom: number}}
      */
     offset = {
@@ -28,8 +28,7 @@ class Coin extends MovableObject {
     };
 
     /**
-     * Creates a new Coin object.
-     * Loads images, sets a random position, and starts the animation.
+     * Creates a new instance of a Coin.
      */
     constructor() {
         super().loadImage('./img/8_coin/coin_1.png');
@@ -40,7 +39,7 @@ class Coin extends MovableObject {
     }
 
     /**
-     * Cycles through the coin images to create an animation effect.
+     * Animates the coin by cycling through its images.
      */
     animate() {
         setStoppableInterval(() => {

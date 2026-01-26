@@ -1,15 +1,15 @@
 /**
- * Represents a collectible salsa bottle in the game that players can pick up or interact with.
+ * Represents a salsa bottle in the game, which can be collected or interacted with.
  * @class
  * @extends MovableObject
  */
-class Bottle extends MovableObject {
+class SalsaBottle extends MovableObject {
     height = 80;
     width = 70;
     y = 350;
 
     /**
-     * List of image paths used to display the salsa bottle.
+     * Array of image paths for the salsa bottle.
      * @type {string[]}
      */
     BOTTLE_IMAGES = [
@@ -18,7 +18,7 @@ class Bottle extends MovableObject {
     ];
 
     /**
-     * Collision offset values for detecting interactions with the bottle.
+     * Offset values for collision detection.
      * @type {{top: number, left: number, right: number, bottom: number}}
      */
     offset = {
@@ -29,17 +29,17 @@ class Bottle extends MovableObject {
     };
 
     /**
-     * Index of the randomly selected image to display for this bottle.
+     * Randomly selected image index for the salsa bottle.
      * @type {number}
      */
     randomImg;
 
     /**
-     * Creates a new Bottle instance, randomly selecting its image and setting a random horizontal position.
+     * Creates a new instance of a SalsaBottle.
      */
     constructor() {
         super();
-        this.getImage();
+        this.getRandomImg();
         if (this.randomImg === 0) {
             this.loadImage('./img/6_salsa_bottle/1_salsa_bottle_on_ground.png');
         } else {
@@ -49,9 +49,9 @@ class Bottle extends MovableObject {
     }
 
     /**
-     * Randomly selects an image index for the salsa bottle.
+     * Generates a random index to select an image for the salsa bottle.
      */
-    getImage() {
+    getRandomImg() {
         this.randomImg = Math.floor(Math.random() * 2);
     }
 }

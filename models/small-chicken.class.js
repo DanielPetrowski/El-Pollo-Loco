@@ -1,6 +1,5 @@
 /**
  * Represents a small chicken enemy in the game.
- * Moves left and can be defeated by the player.
  * @class
  * @extends MovableObject
  */
@@ -10,7 +9,7 @@ class SmallChicken extends MovableObject {
     width = 60;
 
     /**
-     * Image paths for the walking animation.
+     * Array of image paths for the walking animation.
      * @type {string[]}
      */
     IMAGES_WALKING = [
@@ -20,19 +19,19 @@ class SmallChicken extends MovableObject {
     ];
 
     /**
-     * Image paths for the dead animation.
+     * Array of image paths for the dead animation.
      * @type {string[]}
      */
     IMAGE_DEAD = ['img/3_enemies_chicken/chicken_small/2_dead/dead.png'];
 
     /**
-     * Stores the IDs of intervals used to animate and move the chicken.
+     * Stores interval IDs for managing stoppable intervals.
      * @type {number[]}
      */
-    smallChickenID = [];
+    chickenIntervalIds = [];
 
     /**
-     * Collision offsets to adjust the hitbox.
+     * Offset values for collision detection.
      * @type {{top: number, left: number, right: number, bottom: number}}
      */
     offset = {
@@ -46,10 +45,10 @@ class SmallChicken extends MovableObject {
      * Sound effect played when the small chicken dies.
      * @type {HTMLAudioElement}
      */
-    dead_sound = new Audio("Audio/hitChicken.mp3");
+    dead_sound = new Audio('Audio/hitChicken.mp3');
 
     /**
-     * Initializes a new SmallChicken instance, loading images, setting position, speed, and starting animation.
+     * Creates a new instance of a SmallChicken.
      */
     constructor() {
         super().loadImage('img/3_enemies_chicken/chicken_small/1_walk/1_w.png');
@@ -61,7 +60,7 @@ class SmallChicken extends MovableObject {
     }
 
     /**
-     * Animates the small chicken by moving it left and cycling through its walking animation.
+     * Animates the small chicken by moving it and playing its walking animation.
      */
     animate() {
         this.setStoppableIntervalChicken(() => {
@@ -74,29 +73,29 @@ class SmallChicken extends MovableObject {
     }
 
     /**
-     * Creates a stoppable interval for the small chicken and stores the interval ID.
-     * @param {Function} fn - The function to execute on each interval tick.
-     * @param {number} time - Interval duration in milliseconds.
+     * Sets a stoppable interval for the small chicken and stores the interval ID.
+     * @param {Function} fn - The function to execute at each interval.
+     * @param {number} time - The interval time in milliseconds.
      */
     setStoppableIntervalChicken(fn, time) {
         let id = setInterval(fn, time);
-        this.smallChickenID.push(id);
+        this.chickenIntervalIds.push(id);
         intervalIds.push(id);
     }
 
     /**
-     * Animates the small chicken's death by stopping all intervals and playing the dead animation.
+     * Animates the small chicken's death by stopping its movement and playing the dead animation.
      */
     animateDead() {
-        this.smallChickenID.forEach(clearInterval);
+        this.chickenIntervalIds.forEach(clearInterval);
         this.playAnimation(this.IMAGE_DEAD);
     }
 
     /**
-     * Marks the small chicken as dead, sets energy to zero, plays the death sound, and triggers the death animation.
+     * Marks the small chicken as dead, plays the death sound, and triggers the death animation.
      */
     isDead() {
-        if (mute == false) {
+        if (mute == false && this.dead_sound.readyState == 4) {
             this.dead_sound.play();
         }
         this.energy = 0;

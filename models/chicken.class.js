@@ -1,29 +1,29 @@
 /**
  * Represents a chicken enemy in the game.
- * Inherits movement behavior from MovableObject.
+ * Extends the MovableObject class to inherit movement functionality.
  * @class
  */
 class Chicken extends MovableObject {
     /**
-     * Vertical position of the chicken on the canvas.
+     * The y-coordinate of the chicken.
      * @type {number}
      */
     y = 350;
 
     /**
-     * Height of the chicken sprite.
+     * The height of the chicken.
      * @type {number}
      */
     height = 80;
 
     /**
-     * Width of the chicken sprite.
+     * The width of the chicken.
      * @type {number}
      */
     width = 90;
 
     /**
-     * Paths to images used for the walking animation.
+     * Array of image paths for the walking animation.
      * @type {string[]}
      */
     IMAGES_WALKING = [
@@ -33,19 +33,19 @@ class Chicken extends MovableObject {
     ];
 
     /**
-     * Path to the image used for the dead animation.
+     * Array containing the image path for the dead animation.
      * @type {string[]}
      */
     IMAGE_DEAD = ['./img/3_enemies_chicken/chicken_normal/2_dead/dead.png'];
 
     /**
-     * Stores interval IDs for chicken-specific animations.
+     * Array to store interval IDs for chicken-specific animations.
      * @type {number[]}
      */
-    chickenID = [];
+    chickenIntervalIds = [];
 
     /**
-     * Collision detection offsets for each side of the chicken.
+     * The offset for collision detection.
      * @type {{top: number, left: number, right: number, bottom: number}}
      */
     offset = {
@@ -56,14 +56,14 @@ class Chicken extends MovableObject {
     };
 
     /**
-     * Audio object for the chicken's death sound effect.
+     * Audio for the chicken's death sound.
      * @type {Audio}
      */
-    dead_sound = new Audio("Audio/hitChicken.mp3");
+    dead_sound = new Audio('Audio/hitChicken.mp3');
 
     /**
-     * Initializes a new chicken.
-     * Loads images, assigns random position and speed, and starts its animations.
+     * Creates a new Chicken.
+     * Loads images, sets random position and speed, and starts animations.
      */
     constructor() {
         super().loadImage('img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
@@ -75,7 +75,8 @@ class Chicken extends MovableObject {
     }
 
     /**
-     * Begins the chicken's animations, including movement and walking cycles.
+     * Starts the animation intervals for the chicken.
+     * Handles movement and walking animation.
      */
     animate() {
         this.setStoppableIntervalChicken(() => {
@@ -88,29 +89,29 @@ class Chicken extends MovableObject {
     }
 
     /**
-     * Creates a stoppable interval for chicken-specific actions and stores its ID.
-     * @param {Function} fn - The function to execute repeatedly.
-     * @param {number} time - Interval duration in milliseconds.
+     * Sets an interval for chicken-specific animations and stores the interval ID.
+     * @param {Function} fn - The function to execute at each interval.
+     * @param {number} time - The interval time in milliseconds.
      */
     setStoppableIntervalChicken(fn, time) {
         let id = setInterval(fn, time);
-        this.chickenID.push(id);
+        this.chickenIntervalIds.push(id);
         intervalIds.push(id);
     }
 
     /**
-     * Plays the dead animation and clears all active chicken intervals.
+     * Plays the dead animation and clears all chicken-specific intervals.
      */
     animateDead() {
-        this.chickenID.forEach(clearInterval);
+        this.chickenIntervalIds.forEach(clearInterval);
         this.playAnimation(this.IMAGE_DEAD);
     }
 
     /**
-     * Marks the chicken as dead, plays the death sound, and triggers the death animation.
+     * Marks the chicken as dead, plays the death sound, and triggers the dead animation.
      */
     isDead() {
-        if (mute == false) {
+        if (mute == false && this.dead_sound.readyState == 4) {
             this.dead_sound.play();
         }
         this.energy = 0;

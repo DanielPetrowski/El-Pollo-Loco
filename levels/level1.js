@@ -43,15 +43,15 @@ function initLevel() {
             new BackgroundObject('img/5_background/layers/1_first_layer/2.png', 720 * 3),
         ],
         [
-            new Bottle(),
-            new Bottle(),
-            new Bottle(),
-            new Bottle(),
-            new Bottle(),
-            new Bottle(),
-            new Bottle(),
-            new Bottle(),
-            new Bottle()
+            new SalsaBottle(),
+            new SalsaBottle(),
+            new SalsaBottle(),
+            new SalsaBottle(),
+            new SalsaBottle(),
+            new SalsaBottle(),
+            new SalsaBottle(),
+            new SalsaBottle(),
+            new SalsaBottle()
         ],
         [
             new Coin(),

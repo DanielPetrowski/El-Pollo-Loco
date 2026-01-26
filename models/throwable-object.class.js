@@ -1,12 +1,11 @@
 /**
- * Represents a throwable object in the game, such as a salsa bottle.
- * Can be thrown by the player, applies gravity, and shows a splash animation on impact.
+ * Represents a throwable object, such as a salsa bottle, in the game.
  * @class
  * @extends MovableObject
  */
 class ThrowableObject extends MovableObject {
     /**
-     * Image paths for the throwing animation sequence.
+     * Array of image paths for the throwing animation.
      * @type {string[]}
      */
     IMAGES_THROW = [
@@ -17,7 +16,7 @@ class ThrowableObject extends MovableObject {
     ];
 
     /**
-     * Image paths for the splash animation sequence.
+     * Array of image paths for the splash animation.
      * @type {string[]}
      */
     IMAGES_SPLASH = [
@@ -30,22 +29,22 @@ class ThrowableObject extends MovableObject {
     ];
 
     /**
-     * Sound effect played when the bottle hits the ground and splashes.
+     * Sound effect played when the bottle splashes.
      * @type {HTMLAudioElement}
      */
-    splash_sound = new Audio("Audio/bottleSplash.mp3");
+    splash_sound = new Audio('Audio/bottleSplash.mp3');
 
     /**
-     * Stores interval IDs for managing animation and movement of the bottle.
+     * Stores interval IDs for managing stoppable intervals.
      * @type {number[]}
      */
     bottleIntervalIds = [];
 
     /**
-     * Creates a new ThrowableObject.
-     * @param {number} x - Initial horizontal position.
-     * @param {number} y - Initial vertical position.
-     * @param {boolean} otherDirection - Indicates whether the object is thrown in the opposite direction.
+     * Creates a new instance of a ThrowableObject.
+     * @param {number} x - The initial x-coordinate of the object.
+     * @param {number} y - The initial y-coordinate of the object.
+     * @param {boolean} otherDirection - Indicates the direction of the throw.
      */
     constructor(x, y, otherDirection) {
         super().loadImage('./img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png');
@@ -60,17 +59,14 @@ class ThrowableObject extends MovableObject {
     }
 
     /**
-     * Initiates the throw of the object by applying gravity and horizontal movement.
-     * Animates the object while in motion and triggers splash on impact.
+     * Throws the object, applying gravity and horizontal movement.
      */
     throw() {
         if (this.otherDirection) {
-            return; // Prevent throwing if facing left
+            return;
         }
-
         this.speedY = 20;
         this.applyGravity();
-
         let horizontalSpeed = this.otherDirection ? -10 : 10;
 
         this.setStoppableIntervalBottle(() => {
@@ -86,7 +82,7 @@ class ThrowableObject extends MovableObject {
     }
 
     /**
-     * Plays the splash animation, stops all intervals, and removes the bottle from view after a delay.
+     * Plays the splash animation and stops all intervals related to the object.
      */
     splash() {
         if (mute == false) {
@@ -94,7 +90,6 @@ class ThrowableObject extends MovableObject {
         }
 
         this.playAnimationOnce(this.IMAGES_SPLASH);
-
         this.bottleIntervalIds.forEach(clearInterval);
 
         setTimeout(() => {
@@ -103,9 +98,9 @@ class ThrowableObject extends MovableObject {
     }
 
     /**
-     * Creates a stoppable interval for the bottle and stores the interval ID for later clearing.
-     * @param {Function} fn - Function to execute at each interval tick.
-     * @param {number} time - Interval duration in milliseconds.
+     * Sets a stoppable interval for the throwable object and stores the interval ID.
+     * @param {Function} fn - The function to execute at each interval.
+     * @param {number} time - The interval time in milliseconds.
      */
     setStoppableIntervalBottle(fn, time) {
         let id = setInterval(fn, time);
@@ -114,7 +109,7 @@ class ThrowableObject extends MovableObject {
     }
 
     /**
-     * Applies gravity to the bottle, causing it to fall if above ground, updating vertical speed each frame.
+     * Applies gravity to the object, causing it to fall if above ground.
      */
     applyGravity() {
         this.setStoppableIntervalBottle(() => {

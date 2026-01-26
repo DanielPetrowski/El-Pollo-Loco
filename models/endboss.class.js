@@ -1,5 +1,5 @@
 /**
- * Represents the end boss in the game, including its movements, attacks, animations, and behaviors.
+ * Represents the end boss in the game, including its animations, attacks, and behaviors.
  * @class
  * @extends MovableObject
  */
@@ -12,7 +12,7 @@ class Endboss extends MovableObject {
     firstContact = false;
 
     /**
-     * Defines the collision boundaries for the end boss.
+     * Offset values for collision detection.
      * @type {{top: number, left: number, right: number, bottom: number}}
      */
     offset = {
@@ -23,7 +23,7 @@ class Endboss extends MovableObject {
     };
 
     /**
-     * Collection of images used for the walking animation.
+     * Array of image paths for the walking animation.
      * @type {string[]}
      */
     IMAGES_WALKING = [
@@ -34,7 +34,7 @@ class Endboss extends MovableObject {
     ];
 
     /**
-     * Collection of images used for the alert animation.
+     * Array of image paths for the alert animation.
      * @type {string[]}
      */
     IMAGES_ALERT = [
@@ -49,7 +49,7 @@ class Endboss extends MovableObject {
     ];
 
     /**
-     * Collection of images used for the attack animation.
+     * Array of image paths for the attack animation.
      * @type {string[]}
      */
     IMAGES_ATTACK = [
@@ -64,17 +64,7 @@ class Endboss extends MovableObject {
     ];
 
     /**
-     * Collection of images used for the hurt animation when the boss takes damage.
-     * @type {string[]}
-     */
-    IMAGES_HURT = [
-        'img/4_enemie_boss_chicken/4_hurt/G21.png',
-        'img/4_enemie_boss_chicken/4_hurt/G22.png',
-        'img/4_enemie_boss_chicken/4_hurt/G23.png',
-    ];
-
-    /**
-     * Collection of images used for the death animation.
+     * Array of image paths for the death animation.
      * @type {string[]}
      */
     IMAGES_DEAD = [
@@ -84,13 +74,23 @@ class Endboss extends MovableObject {
     ];
 
     /**
-     * Stores IDs of intervals for managing animations and behaviors.
-     * @type {number[]}
+     * Array of image paths for the hurt animation.
+     * @type {string[]}
      */
-    intervallIDs = [];
+    IMAGES_HURT = [
+        'img/4_enemie_boss_chicken/4_hurt/G21.png',
+        'img/4_enemie_boss_chicken/4_hurt/G22.png',
+        'img/4_enemie_boss_chicken/4_hurt/G23.png',
+    ];
 
     /**
-     * Initializes a new Endboss instance, loads all animations, and sets its starting position.
+     * Stores interval IDs for managing stoppable intervals.
+     * @type {number[]}
+     */
+    endbossIntervalIds = [];
+
+    /**
+     * Creates a new instance of the Endboss.
      */
     constructor() {
         super().loadImage(this.IMAGES_WALKING[0]);
@@ -104,38 +104,37 @@ class Endboss extends MovableObject {
     }
 
     /**
-     * Starts all animations and behaviors for the end boss.
+     * Starts the animations for the end boss, including walking, attacking, and other states.
      */
     animate() {
-        this.setStoppableIntervalEndboss(this.endbossWalking.bind(this), 200);
-        setStoppableInterval(this.endbossAttacking.bind(this), 100);
-        setStoppableInterval(this.endbossDeath.bind(this), 200);
-        setStoppableInterval(this.endbossHurt.bind(this), 400);
+        this.setStoppableIntervalEndboss(this.handleEndbossWalk.bind(this), 200);
+        setStoppableInterval(this.handleEndbossAttack.bind(this), 100);
+        setStoppableInterval(this.handleEndbossDeath.bind(this), 200);
+        setStoppableInterval(this.handleEndbossHurt.bind(this), 400);
     }
 
     /**
-     * Plays the walking animation sequence for the end boss.
+     * Handles the walking animation of the end boss.
      */
-    endbossWalking() {
+    handleEndbossWalk() {
         this.playAnimation(this.IMAGES_WALKING);
     }
 
     /**
-     * Plays the attack animation if the end boss is currently attacking.
+     * Handles the attack animation of the end boss.
      */
-    endbossAttacking() {
+    handleEndbossAttack() {
         if (this.isAttacking) {
             this.playAnimation(this.IMAGES_ATTACK);
         }
     }
 
     /**
-     * Plays the death animation and stops all intervals when the boss's energy reaches zero.
-     * Triggers the game win condition after a short delay.
+     * Handles the death animation of the end boss and triggers the game win condition.
      */
-    endbossDeath() {
+    handleEndbossDeath() {
         if (this.energy == 0) {
-            this.intervallIDs.forEach(clearInterval);
+            this.endbossIntervalIds.forEach(clearInterval);
             this.speed = 0;
             this.playAnimationOnce(this.IMAGES_DEAD);
             setTimeout(() => {
@@ -145,16 +144,16 @@ class Endboss extends MovableObject {
     }
 
     /**
-     * Plays the hurt animation when the end boss takes damage.
+     * Handles the hurt animation of the end boss when it takes damage.
      */
-    endbossHurt() {
+    handleEndbossHurt() {
         if (this.isHurt()) {
             this.playAnimation(this.IMAGES_HURT);
         }
     }
 
     /**
-     * Activates the attack behavior of the end boss.
+     * Starts the attack behavior of the end boss.
      */
     attack() {
         if (!this.isAttacking) {
@@ -163,27 +162,26 @@ class Endboss extends MovableObject {
     }
 
     /**
-     * Deactivates the attack behavior of the end boss.
+     * Stops the attack behavior of the end boss.
      */
     stopAttack() {
         this.isAttacking = false;
     }
 
     /**
-     * Sets a stoppable interval for end boss behavior and stores its ID for later clearing.
-     * @param {Function} fn - The function to execute repeatedly.
-     * @param {number} time - Interval duration in milliseconds.
+     * Sets a stoppable interval for the end boss and stores the interval ID.
+     * @param {Function} fn - The function to execute at each interval.
+     * @param {number} time - The interval time in milliseconds.
      */
     setStoppableIntervalEndboss(fn, time) {
         let id = setInterval(fn, time);
-        this.intervallIDs.push(id);
+        this.endbossIntervalIds.push(id);
         intervalIds.push(id);
     }
 
     /**
-     * Reduces the end boss's energy by the specified damage amount.
-     * Ensures energy does not drop below zero.
-     * @param {number} damage - The damage to apply to the boss.
+     * Reduces the energy of the end boss when it takes damage.
+     * @param {number} damage - The amount of damage to apply.
      */
     hit(damage) {
         this.energy -= damage;
@@ -194,23 +192,13 @@ class Endboss extends MovableObject {
         }
     }
 
-    /**
-     * Moves the boss towards the player character while respecting collision offsets.
-     * Stops moving when reaching the character.
-     */
     moveLeftBoss() {
-        let char = this.world.character;
+        const char = this.world.character;
+        const bossLeft = this.x + this.offset.left;
+        const charRight = char.x + char.width - char.offset.right;
 
-        // Calculate boss's left edge with offset
-        let bossLeft = this.x + this.offset.left;
-
-        // Calculate character's right edge
-        let charRight = char.x + char.width - char.offset.right;
-
-        // Move left until reaching the character
         if (bossLeft > charRight) {
             this.x -= Math.min(this.speed, bossLeft - charRight);
         }
-        // Stop when bossLeft <= charRight
     }
 }

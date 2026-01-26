@@ -37,5 +37,5 @@ class Keyboard {
      * Indicates whether the 'X' key is pressed.
      * @type {boolean}
      */
-    D = false;
+    X = false;
 }

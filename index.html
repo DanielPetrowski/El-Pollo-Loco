@@ -1,20 +1,18 @@
 <!DOCTYPE html>
-<html lang="de" translate="no" user-scalable="no">
+<html lang="en" translate="no" user-scalable="no">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <title>El Pollo Loco</title>
-    <link rel="stylesheet" href="Impressum.css">
-    <link rel="stylesheet" href="style.css">
-    
+    <link rel="stylesheet" href="./style.css">
     <link rel="icon" type="image/x-icon" href="img/Favicon/Chicken.png">
 </head>
 
 <body>
     <h1>El Pollo Loco</h1>
 
-    
+    <div id="fullscreen" class="fullscreen">
         <div id="turnPhoneMessage" class="turnPhoneMessage">Turn your phone<br>to play</div>
 
         <div class="startScreenContainer screens" id="startScreenContainer">
@@ -39,7 +37,9 @@
                 <button class="controlButtons" id="btnMute" onclick="toggleMute()">
                     <img id="muteIcon" src="img/icons/activeSound.png" alt="Mute Icon" width="32" height="32">
                 </button>
-               
+                <button class="controlButtons hideOnPhone" id="btnFullscreen" onclick="fullscreen()">
+                    <img id="fullscreenIcon" src="img/icons/fullscreen.png" alt="Fullscreen Icon" width="32" height="32">
+                </button>
             </div>
 
             <div id="paneldown" class="panel paneldown d-none">
@@ -71,34 +71,34 @@
         <div class="controls">
             <div>WALK - Arrow keys</div>
             <div>JUMP - Space</div>
-            <div>THROW - D</div>
+            <div>THROW - X</div>
         </div>
     </div>
 
     <footer class="site-footer">
         <div class="container">
             <p class="copyright">
-                
-                <a href="Impressum.html" title="Legal Notice" aria-label="Legal Notice (page with legal information)">Legal </a>
+                &copy; 2025 Daniel Petrowski 
+                <a href="impressum.html" title="Impressum" aria-label="Legal Notice (page with legal information)">Impressum</a>
             </p>
         </div>
     </footer>
 
     <script src="./models/world.class.js"></script>
     <script src="./models/drawable-object.class.js"></script>
-    <script src="./models/moveable-objects.class.js"></script>
+    <script src="./models/movable-object.class.js"></script>
     <script src="./models/character.class.js"></script>
     <script src="./models/chicken.class.js"></script>
-    <script src="./models/small_chicken.class.js"></script>
-    <script src="./models/bottle.class.js"></script>
-    <script src="./models/coins.class.js"></script>
-    <script src="./models/clouds.class.js"></script>
+    <script src="./models/small-chicken.class.js"></script>
+    <script src="./models/salsa-bottle.class.js"></script>
+    <script src="./models/coin.class.js"></script>
+    <script src="./models/cloud.class.js"></script>
     <script src="./models/background-object.class.js"></script>
     <script src="./models/keyboard.class.js"></script>
-    <script src="./models/level.class.js"></script>
-    <script src="./models//endboss.class.js"></script>
+    <script src="./models/levels.class.js"></script>
+    <script src="./models/endboss.class.js"></script>
     <script src="./models/bar.class.js"></script>
-    <script src="./models/endbossBar.class.js"></script>
+    <script src="./models/endboss-lifebar.class.js"></script>
     <script src="./models/health-bar.class.js"></script>
     <script src="./models/coin-bar.class.js"></script>
     <script src="./models/bottle-bar.class.js"></script>

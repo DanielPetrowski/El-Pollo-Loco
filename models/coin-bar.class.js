@@ -1,15 +1,13 @@
 /**
- * Represents the coin bar in the game and extends the Bar class to display the player's collected coins.
+ * Represents the coin bar in the game, which displays the player's collected coins.
+ * @class
+ * @extends Bar
  */
 class CoinBar extends Bar {
-    /**
-     * The y-coordinate position of the coin bar.
-     * @type {number}
-     */
     y = 40;
 
     /**
-     * The array of image paths representing different states of the coin bar.
+     * Array of image paths representing different coin bar states.
      * @type {string[]}
      */
     IMAGES = [
@@ -22,7 +20,7 @@ class CoinBar extends Bar {
     ];
 
     /**
-     * Creates a new instance of the CoinBar class, loads the images, and sets the initial percentage to 0.
+     * Creates a new instance of the CoinBar.
      */
     constructor() {
         super();
