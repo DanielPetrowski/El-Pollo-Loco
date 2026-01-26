@@ -163,7 +163,7 @@ class Character extends MovableObject {
      * Audio for snoring sound.
      * @type {Audio}
      */
-    snoring_sound = new Audio('audio/snoring.mp3');
+    snoring_sound = new Audio('Audio/Snoring.mp3');
 
     
 
@@ -261,7 +261,7 @@ class Character extends MovableObject {
      */
     handleIdleAnimation() {
         if (!this.world.keyboard.RIGHT && !this.world.keyboard.SPACE && !this.world.keyboard.LEFT && !this.world.keyboard.X && !this.isHurt()) {
-            if (this.idleTime < 20) {
+            if (this.idleTime < 5) {
                 this.idleTime++;
                 this.playAnimation(this.IMAGES_IDLE);
             } else {
