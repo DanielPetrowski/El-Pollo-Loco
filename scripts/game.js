@@ -217,16 +217,37 @@ function hideOrientationMessage() {
     document.getElementById('turnPhoneMessage').style.display = 'none';
 }
 
+function isMobileDevice() {
+    return (
+        ('ontouchstart' in window || navigator.maxTouchPoints > 0) &&
+        window.innerWidth <= 1024 // z.B. Smartphones/Tablets
+    );
+}
+
 /**
- * Shows the orientation message element with the appropriate message based on the screen orientation.
- * @param {string} screenOrientation - The current screen orientation.
- * @param {HTMLElement} output - The element to display the orientation message.
+ * Zeigt eine Dreh-Nachricht nur auf mobilen Geräten an.
+ * @param {string} screenOrientation - z.B. screen.orientation.type
+ * @param {HTMLElement} output - Element, in dem die Nachricht angezeigt wird
  */
 function showOrientationMessage(screenOrientation, output) {
-    document.getElementById('turnPhoneMessage').style.display = 'flex';
-    if (screenOrientation === "landscape-secondary") output.innerHTML = "Mmmh... the screen is upside down!";
-    else if (screenOrientation.includes("portrait")) output.innerHTML = "Rotate your device to play!";
-    else console.log("The orientation API isn't supported in this browser :(");
+    const turnPhoneMessage = document.getElementById('turnPhoneMessage');
+
+    if (!isMobileDevice()) {
+        // Desktop oder große Displays: Nachricht ausblenden
+        turnPhoneMessage.style.display = 'none';
+        return;
+    }
+
+    // Mobile Geräte: Nachricht anzeigen
+    turnPhoneMessage.style.display = 'flex';
+
+    if (screenOrientation === "landscape-secondary") {
+        output.innerHTML = "Mmmh... the screen is upside down!";
+    } else if (screenOrientation.includes("portrait")) {
+        output.innerHTML = "Rotate your device to play!";
+    } else {
+        console.log("The orientation API isn't supported in this browser :(");
+    }
 }
 
 /**

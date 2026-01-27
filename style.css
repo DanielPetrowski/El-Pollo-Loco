@@ -20,7 +20,6 @@ body {
     background-size: cover;
     background-position: center;
     height: 100vh;
-    overflow-y: hidden;
     overflow-x: hidden;
 }
 
@@ -353,5 +352,9 @@ img {
 
     .panel-wrapper {
         gap: 24px;
+    }
+}@media(min-width:3999px){
+    .paneldown{
+        display: none;
     }
 }
