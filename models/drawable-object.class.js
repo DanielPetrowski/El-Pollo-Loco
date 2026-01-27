@@ -59,7 +59,7 @@ class DrawableObject {
         this.img = new Image();
         this.img.src = path;
         this.img.onload = () => {
-            console.log('Image loaded:', path);
+            
         };
     }
 

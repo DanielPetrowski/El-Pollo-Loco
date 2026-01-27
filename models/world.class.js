@@ -254,7 +254,7 @@ class World {
             this.character.hit(1);
 
             this.healthBar.setPercentage(this.character.energy);
-            console.log(this.character.energy)
+           
         }
     }
 
