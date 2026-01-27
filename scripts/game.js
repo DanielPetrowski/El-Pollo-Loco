@@ -108,13 +108,71 @@ function playBackgroundSound() {
     if (!mute && backgroundSound.readyState == 4) backgroundSound.play();
 }
 
+function preloadImages(imagePaths, callback) {
+    let loadedCount = 0;
+    const total = imagePaths.length;
+
+    imagePaths.forEach(src => {
+        const img = new Image();
+        img.onload = () => {
+            loadedCount++;
+            if (loadedCount === total) callback();
+        };
+        img.onerror = () => {
+            console.error('Fehler beim Laden:', src);
+            loadedCount++;
+            if (loadedCount === total) callback();
+        };
+        img.src = src;
+    });
+}
+
+const imagePaths = [
+    // === BACKGROUND AIR ===
+    'img/5_background/layers/air.png',
+
+    // === BACKGROUND 3rd LAYER ===
+    'img/5_background/layers/3_third_layer/1.png',
+    'img/5_background/layers/3_third_layer/2.png',
+
+    // === BACKGROUND 2nd LAYER ===
+    'img/5_background/layers/2_second_layer/1.png',
+    'img/5_background/layers/2_second_layer/2.png',
+
+    // === BACKGROUND 1st LAYER ===
+    'img/5_background/layers/1_first_layer/1.png',
+    'img/5_background/layers/1_first_layer/2.png',
+
+    // === CLOUDS ===
+    'img/5_background/layers/4_clouds/1.png',
+    'img/5_background/layers/4_clouds/2.png',
+
+    // === ENEMIES ===
+    'img/2_enemies/chicken/chicken.png',
+    'img/2_enemies/chicken_small/chicken_small.png',
+    'img/2_enemies/endboss/endboss.png',
+
+    // === ITEMS ===
+    'img/6_salsa_bottle/salsa_bottle.png',
+    'img/7_statusbars/3_icons/icon_coin.png'
+];
+
+
+
+
 /**
  * Starts the game by initializing the level and showing the game canvas.
  */
 function startGame() {
-    initLevel();
-    hideScreens();
-    init();
+    const btn = document.getElementById('startButton');
+    btn.disabled = true;          
+    btn.innerText = 'Loading…';   
+
+    preloadImages(imagePaths, () => {
+        initLevel();
+        hideScreens();
+        init();
+    });
 }
 
 /**
