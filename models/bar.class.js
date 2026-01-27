@@ -61,19 +61,13 @@ class Bar extends DrawableObject {
      * Resolves the image index based on the current percentage value.
      * @returns {number} The index of the image to display.
      */
-    resolveImageIndex() {
-        if (this.percentage == 100) {
-            return 5;
-        } else if (this.percentage > 79) {
-            return 4;
-        } else if (this.percentage > 59) {
-            return 3;
-        } else if (this.percentage > 39) {
-            return 2;
-        } else if (this.percentage > 19) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
+resolveImageIndex() {
+    if (this.percentage >= 100) return 5;   // 100% → 100.png
+    if (this.percentage > 80)  return 4;    // 81–99% → 80.png
+    if (this.percentage > 60)  return 3;    // 61–80% → 60.png
+    if (this.percentage > 40)  return 2;    // 41–60% → 40.png
+    if (this.percentage > 20)  return 1;    // 21–40% → 20.png
+    if (this.percentage > 0)   return 1;    // 1–20% → 20.png (nicht 0!)
+    return 0;                              // 0% oder kleiner → 0.png
+}
 }

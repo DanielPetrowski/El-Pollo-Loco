@@ -261,7 +261,7 @@ class Character extends MovableObject {
      */
     handleIdleAnimation() {
         if (!this.world.keyboard.RIGHT && !this.world.keyboard.SPACE && !this.world.keyboard.LEFT && !this.world.keyboard.X && !this.isHurt()) {
-            if (this.idleTime < 5) {
+            if (this.idleTime < 15) {
                 this.idleTime++;
                 this.playAnimation(this.IMAGES_IDLE);
             } else {

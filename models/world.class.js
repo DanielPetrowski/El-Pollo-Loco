@@ -252,7 +252,9 @@ class World {
     damageCharacter(enemy) {
         if (enemy.energy > 0) {
             this.character.hit(1);
+
             this.healthBar.setPercentage(this.character.energy);
+            console.log(this.character.energy)
         }
     }
 
